@@ -42,16 +42,18 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode emailFocus = new FocusNode();
   FocusNode passWordFocus = new FocusNode();
   late GoogleSignInAccount _userObj;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
   bool isLoggedIn = false;
 
   //GoogleSignInAccount? _currentUser;
   String _contactText = '';
 
   final _unqKey = UniqueKey();
-
-/*  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
+/*
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    // Optional clientId
+    // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
+    clientId: '601102665085-nk7geakefmvdemeqasf5fn864j87tfvv.apps.googleusercontent.com',
+  scopes: [
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
@@ -71,15 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
       const SystemUiOverlayStyle(statusBarColor: MyAppTheme.backgroundColor),
     );
 
-    /* _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-      if (_currentUser != null) {
-        _handleGetContact(_currentUser!);
-      }
-    });
-    _googleSignIn.signInSilently();*/
   }
 
   String? _pickFirstNamedContact(Map<String, dynamic> data) {
@@ -128,16 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     });
   }
-
-  /*Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  Future<void> _handleSignOut() => _googleSignIn.disconnect();*/
 
   @override
   Widget build(BuildContext context) {
@@ -340,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () {
                         // _handleSignIn();
-                        _googleSignIn.signIn().then((userData) {
+                        /*_googleSignIn.signIn().then((userData) {
                           setState(() {
                             // _isLoggedIn = true;
                             _userObj = userData!;
@@ -348,7 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         }).catchError((e) {
                           print(e);
-                        });
+                        });*/
                       }, // handle your image tap here
                       child: Image.asset(
                         MyImages.ic_gplus,
