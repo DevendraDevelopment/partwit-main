@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:part_wit/model/LoginModel.dart';
+import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/utiles/constaint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,7 +37,7 @@ class t_datingPreferences {
     if (value != null) {
       Map<String, dynamic> map = json.decode(value);
       logPrint("Login DATA GET IN SHARED PREFRENCE ::::: - ${map.toString()}");
-      loginAndRegistrationresponse = LoginModel.fromJson(map);
+      loginAndRegistrationresponse = ModeRegister.fromJson(map);
     } else {
       loginAndRegistrationresponse = null;
     }

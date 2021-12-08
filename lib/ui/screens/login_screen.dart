@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/model/LoginModel.dart';
+import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/user_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
@@ -373,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void loginData(LoginModel response) {
+  void loginData(ModeRegister response) {
     loginAndRegistrationresponse = response;
     if (loginAndRegistrationresponse!.status) {
       Get.toNamed(MyRouter.homeScreen);

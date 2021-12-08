@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void navigationToWelcomeScreen() {
     try {
       // Get.toNamed(MyRouter.loginScreen);
-      Navigator.pushReplacementNamed(context, MyRouter.locationScreen);
+      Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
     } on Exception catch (e) {
       e.printError();
     }

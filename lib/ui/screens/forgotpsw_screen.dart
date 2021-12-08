@@ -4,13 +4,16 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:part_wit/repository/forgot_password_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/verification_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
+import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/utility.dart';
 
@@ -96,9 +99,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter email address';
-                      } else if (!isEmail(_emailController.text)) {
+                      } /*else if (!isEmail(_emailController.text)) {
                         return 'Please enter valid email address';
-                      }
+                      }*/
                       return null;
                     },
                     decoration: InputDecoration(
@@ -139,14 +142,31 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         onPressed: () {
                           if (forgot_Key.currentState!.validate()) {
                             _isEmailFocus = false;
-                            FocusScope.of(this.context)
-                                .requestFocus(FocusNode());
-                            try {
-                              Get.toNamed(MyRouter.verificationScreen,
-                                  arguments: Constant.PASS_VALUE);
-                            } on Exception catch (e) {
-                              e.printError();
-                            }
+                            FocusScope.of(this.context).requestFocus(FocusNode());
+                            Helpers.verifyInternet().then((intenet) {
+                              if (intenet != null && intenet) {
+                                createForgotPassword(_emailController.text,context)
+                                    .then((response) {
+                                  setState(() {
+                                    if(response.status==true){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
+                                      );
+                                      /*Map<String, String> map = {
+                                        "email": _emailController.text,
+                                        "type": Constant.FORGET_PASSWORD,
+                                      };
+                                      Get.toNamed(MyRouter.verificationScreen,
+                                          parameters: map);*/
+                                    }
+                                  });
+                                });
+                              } else {
+                                Helpers.createSnackBar(context, "Please check your internet connection");
+                              }
+                            });
+
                           }
                         },
                       ),

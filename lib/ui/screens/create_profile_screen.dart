@@ -1,17 +1,17 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:part_wit/ui/routers/my_router.dart';
-import 'package:part_wit/ui/styles/my_app_theme.dart';
-import 'package:part_wit/ui/styles/my_images.dart';
+import 'package:part_wit/repository/update_user_profile_repository.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
+import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constant.dart';
+import 'package:part_wit/utiles/my_app_theme.dart';
+import 'package:part_wit/utiles/my_images.dart';
 import 'package:part_wit/utiles/utility.dart';
 
 
@@ -24,6 +24,9 @@ class CreateProfile extends StatefulWidget {
 
 class _CreateProfileState extends State<CreateProfile> {
   final profile_formKey = GlobalKey<FormState>();
+  bool _isNameFocus = false;
+  TextEditingController _nameController = new TextEditingController();
+  FocusNode nameFocus = new FocusNode();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
@@ -61,20 +64,37 @@ class _CreateProfileState extends State<CreateProfile> {
                 SizedBox(
                   height: screenSize.height * 0.05,
                 ),
-                const LightTextBody(data: Constant.UPLOAD_PROFILE,),
+                const LightTextBody(
+                  data: Constant.UPLOAD_PROFILE,
+                ),
                 SizedBox(
                   height: screenSize.height * 0.04,
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40,  0),
+                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                   child: TextFormField(
                     style: const TextStyle(
                         color: MyAppTheme.textPrimary,
                         fontWeight: FontWeight.normal,
                         fontSize: 14),
-                    enabled: true,
+
                     obscureText: false,
-                    //  controller: emailController,
+                    focusNode: nameFocus,
+                    controller: _nameController,
+                    onTap: () {
+                      setState(() {
+                        _isNameFocus = true;
+                      });
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter name';
+                      }
+                      /* else if (!isEmail(_emailController.text)) {
+                        return 'Please enter valid email address';
+                      }*/
+                      return null;
+                    },
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: MyAppTheme.buttonShadow_Color,
@@ -97,7 +117,6 @@ class _CreateProfileState extends State<CreateProfile> {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   height: screenSize.height * 0.05,
                 ),
@@ -109,11 +128,30 @@ class _CreateProfileState extends State<CreateProfile> {
                         Constant.CONTINUE,
                         54,
                         onPressed: () {
-                          try {
+                          if (profile_formKey.currentState!.validate()) {
+                            _isNameFocus = false;
+                            FocusScope.of(this.context).requestFocus(FocusNode());
+                            Helpers.verifyInternet().then((intenet) {
+                              if (intenet != null && intenet) {
+                                createUserUpdateData(_imageFile!,
+                                        _nameController.text, context)
+                                    .then((response) {
+                                  setState(() {
+
+                                  });
+                                });
+                              } else {
+                                Helpers.createSnackBar(context,
+                                    "Please check your internet connection");
+                              }
+                            });
+                          }
+
+                          /* try {
                             Get.toNamed(MyRouter.welcomeScreen);
                           } on Exception catch (e) {
                             e.printError();
-                          }
+                          }*/
                         },
                       ),
                     ],
@@ -166,7 +204,13 @@ class _CreateProfileState extends State<CreateProfile> {
 
     final imageTemporary = File(_imageFile.path);
     this._imageFile = imageTemporary;
-    setState(() => this._imageFile = imageTemporary);
+
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      this._imageFile = imageTemporary;
+
+      // Your Code
+    });
+    // setState(() => this._imageFile = imageTemporary);
   }
 
   getImageWidget() {
@@ -182,13 +226,14 @@ class _CreateProfileState extends State<CreateProfile> {
       );
     } else {
       return const CircleAvatar(
-        backgroundColor: Colors.grey,
-        radius: 60,
-        child: CircleAvatar(
-          radius: 58,
-          backgroundImage: AssetImage(MyImages.ic_person //Convert File type of image to asset image path),
-        ),
-      ));
+          backgroundColor: Colors.grey,
+          radius: 60,
+          child: CircleAvatar(
+            radius: 58,
+            backgroundImage: AssetImage(MyImages
+                    .ic_person //Convert File type of image to asset image path),
+                ),
+          ));
     }
   }
 

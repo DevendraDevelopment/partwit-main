@@ -40,7 +40,7 @@ class MyRouter {
     GetPage(name: MyRouter.locationScreen, page: () => const LocationScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.signupScreen, page: () => const SignUpScreen()),
-    GetPage(name: MyRouter.verificationScreen, page: () => const VerificationScreen()),
+    GetPage(name: MyRouter.verificationScreen, page: () =>  VerificationScreen("","")),
     GetPage(name: MyRouter.createProfile, page: () => const CreateProfile()),
     GetPage(name: MyRouter.welcomeScreen, page: () => const WelcomeScreen()),
     GetPage(name: MyRouter.forgotPassword, page: () => const ForgotPassword()),

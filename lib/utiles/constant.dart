@@ -62,6 +62,8 @@ class Constant {
   static const SIGNUP_HERE = 'Sign up here';
 
   static const PASS_VALUE = 'forgot_Screen';
+  static const REGISTRATION_OTP = 'registration_otp';
+  static const FORGET_PASSWORD = 'forget_password';
 
 
   static const USER_NAME = 'userName';
