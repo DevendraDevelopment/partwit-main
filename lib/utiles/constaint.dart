@@ -25,7 +25,6 @@ logPrint(String logis) {
   log(logis);
 }
 
-
 LoginModel? loginAndRegistrationresponse;
 
 messagetoastfalse(BuildContext context, String msg) {
@@ -38,6 +37,7 @@ messagetoastfalse(BuildContext context, String msg) {
       textColor: Colors.white,
       fontSize: 12.0);
 }
+
 messagetoasttrue(BuildContext context, String msg) {
   Fluttertoast.showToast(
       msg: msg,

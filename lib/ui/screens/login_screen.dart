@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -22,6 +23,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 import 'dart:convert' show json;
 
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import "package:http/http.dart" as http;
 
 class LoginScreen extends StatefulWidget {
@@ -33,31 +35,32 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final login_formKey = GlobalKey<FormState>();
-  bool _showPassword = false,
-      _isEmailFocus = false,
-      _isPasswordFocus = false;
+  bool _showPassword = false, _isEmailFocus = false, _isPasswordFocus = false;
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   FocusNode emailFocus = new FocusNode();
   FocusNode passWordFocus = new FocusNode();
-  late GoogleSignInAccount _userObj;
+
   bool isLoggedIn = false;
 
-  //GoogleSignInAccount? _currentUser;
+  GoogleSignInAccount? _currentUser;
   String _contactText = '';
 
   final _unqKey = UniqueKey();
-/*
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+
+  //fbUset
+  Map _userObj = {};
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
-    // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
-    clientId: '601102665085-nk7geakefmvdemeqasf5fn864j87tfvv.apps.googleusercontent.com',
-  scopes: [
+    // clientId: '740034809617-kpifjtk2mvnch6i6c92g9tnpr6ljekp3.apps.googleusercontent.com',
+    scopes: <String>[
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
-  );*/
+  );
+
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -72,61 +75,37 @@ class _LoginScreenState extends State<LoginScreen> {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: MyAppTheme.backgroundColor),
     );
-
-  }
-
-  String? _pickFirstNamedContact(Map<String, dynamic> data) {
-    final List<dynamic>? connections = data['connections'];
-    final Map<String, dynamic>? contact = connections?.firstWhere(
-          (dynamic contact) => contact['names'] != null,
-      orElse: () => null,
-    );
-    if (contact != null) {
-      final Map<String, dynamic>? name = contact['names'].firstWhere(
-            (dynamic name) => name['displayName'] != null,
-        orElse: () => null,
+    if (kIsWeb) {
+      // initialiaze the facebook javascript SDK
+      FacebookAuth.instance.webInitialize(
+        appId: "3149092691975649",
+        cookie: true,
+        xfbml: true,
+        version: "v11.0",
       );
-      if (name != null) {
-        return name['displayName'];
-      }
     }
-    return null;
-  }
-
-  Future<void> _handleGetContact(GoogleSignInAccount user) async {
-    setState(() {
-      _contactText = "Loading contact info...";
-    });
-
-    final http.Response response = await http.get(
-      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
-          '?requestMask.includeField=person.names'),
-      headers: await user.authHeaders,
-    );
-    if (response.statusCode != 200) {
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
-        _contactText = "People API gave a ${response.statusCode} "
-            "response. Check logs for details.";
+        _currentUser = account;
+        print("GOOGLE1" + _currentUser!.email.toString());
       });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
-    }
-    final Map<String, dynamic> data = json.decode(response.body);
-    final String? namedContact = _pickFirstNamedContact(data);
-    setState(() {
-      if (namedContact != null) {
-        _contactText = "I see you know $namedContact!";
-      } else {
-        _contactText = "No contacts to display.";
-      }
     });
+    // _googleSignIn.signInSilently();
   }
+
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery
-        .of(context)
-        .size;
+    final screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         ///hide keyboard function
@@ -191,9 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: MyAppTheme.buttonShadow_Color),
+                              BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                          BorderRadius.all(Radius.circular(15.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.whiteColor, width: 2.0),
@@ -238,9 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: MyAppTheme.buttonShadow_Color),
+                              BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                          BorderRadius.all(Radius.circular(15.0))),
+                              BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
@@ -248,8 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       suffixIcon: IconButton(
                         icon: _showPassword
                             ? ImageIcon(AssetImage(MyImages.ic_eye_open))
-                            : ImageIcon(AssetImage(MyImages
-                            .ic_eye_close)),
+                            : ImageIcon(AssetImage(MyImages.ic_eye_close)),
                         onPressed: () {
                           setState(() => _showPassword = !_showPassword);
                         },
@@ -288,14 +266,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
                                 createLogin(_emailController.text,
-                                    _passwordController.text, context)
+                                        _passwordController.text, context)
                                     .then((response) {
                                   setState(() {
                                     loginData(response);
                                   });
                                 });
                               } else {
-                                Helpers.createSnackBar(context, "Please check your internet connection");
+                                Helpers.createSnackBar(context,
+                                    "Please check your internet connection");
                               }
                             });
                           }
@@ -314,24 +293,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      MyImages.ic_fb,
+                    GestureDetector(
+                      onTap: () {
+                        if (kIsWeb) {
+                          // initialiaze the facebook javascript SDK
+                          FacebookAuth.instance.webInitialize(
+                            appId: "3149092691975649",
+                            cookie: true,
+                            xfbml: true,
+                            version: "v11.0",
+                          );
+                        }
+
+                        FacebookAuth.instance.login(
+                            permissions: ["public_profile", "email"]).then((value) {
+                          print("FB DATA :: "+value.toString()+"\n"+value.status.toString());
+                          print("FB DATA 1 :: "+value.accessToken.toString());
+                          FacebookAuth.instance.getUserData().then((userData) {
+                            setState(() {
+                              // _isLoggedIn = true;
+                              _userObj = userData;
+                              print("USER DATA :: "+_userObj.toString());
+                            });
+                          });
+                        });
+                      },
+                      child: Image.asset(
+                        MyImages.ic_fb,
+                      ),
                     ),
                     SizedBox(
                       width: screenSize.height * 0.02,
                     ),
                     GestureDetector(
                       onTap: () {
-                        // _handleSignIn();
-                        /*_googleSignIn.signIn().then((userData) {
-                          setState(() {
-                            // _isLoggedIn = true;
-                            _userObj = userData!;
-                            print(_userObj);
-                          });
-                        }).catchError((e) {
-                          print(e);
-                        });*/
+                        _handleSignIn();
+                        print("USER :: " + _currentUser!.email);
                       }, // handle your image tap here
                       child: Image.asset(
                         MyImages.ic_gplus,
@@ -378,7 +375,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginData(LoginModel response) {
     loginAndRegistrationresponse = response;
-    if (loginAndRegistrationresponse!.status){
+    if (loginAndRegistrationresponse!.status) {
       Get.toNamed(MyRouter.homeScreen);
     }
   }
