@@ -7,25 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:part_wit/model/LoginModel.dart';
-import 'package:part_wit/model/ModelRegister.dart';
+import 'package:part_wit/model/ModelForgotPassword.dart';
 import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constaint.dart';
 
 import '../repository/user_repository.dart' as userRepo;
 import 'package:http_parser/http_parser.dart';
 
-Future<ModeRegister> createLogin(
-    String email, String password, BuildContext context) async
+Future<ModelForgotPassword> createForgotPassword(
+    String email,BuildContext context) async
 {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var url;
-    url = Uri.parse(ApiUrls.loginUrl);
+  url = Uri.parse(ApiUrls.sendForgotPasswordOtpMail);
   var map = new Map<String, dynamic>();
   map['email'] = email;
-  map['password'] = password;
-  map['device_id'] = '1476402def040d58';
-  map['role'] = '2';
   http.Response response = await http.post(
     url,
     body: map,
@@ -37,7 +34,7 @@ Future<ModeRegister> createLogin(
     status=json.decode(response.body)['status'];
     if(status==true){
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
-      return ModeRegister.fromJson(json.decode(response.body));
+      return ModelForgotPassword.fromJson(json.decode(response.body));
     } else{
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
     }
@@ -48,5 +45,5 @@ Future<ModeRegister> createLogin(
     throw Exception(response.body);
 
   }
-  return ModeRegister.fromJson(json.decode(response.body));
+  return ModelForgotPassword.fromJson(json.decode(response.body));
 }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/user_sign_up_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/verification_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
@@ -14,6 +16,7 @@ import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/utiles/Helpers.dart';
+import 'package:part_wit/utiles/constaint.dart';
 import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/utility.dart';
 
@@ -108,9 +111,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter email address';
-                      } else if (!isEmail(_emailController.text)) {
+                      } /*else if (!isEmail(_emailController.text)) {
                         return 'Please enter valid email address';
-                      }
+                      }*/
                       return null;
                     },
                     decoration: InputDecoration(
@@ -318,11 +321,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     .then((response) {
                                   setState(() {
                                     model = response;
+                                    loginAndRegistrationresponse = response;
+                                    print(loginAndRegistrationresponse!.token);
                                     Helpers.createSnackBar(context,
                                         "Response :: "+model.toString());
                                     if (model!.status) {
                                       print("Response  " + model.toString());
-                                      Get.toNamed(MyRouter.homeScreen);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
+                                      );
+                                     /* Map<String, String> map = {
+                                        "email": _emailController.text,
+                                        "type": Constant.REGISTRATION_OTP,
+                                      };
+                                      Get.toNamed(MyRouter.verificationScreen,
+                                          parameters: map);*/
                                     }
                                   });
                                 });

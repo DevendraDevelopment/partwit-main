@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:part_wit/model/LoginModel.dart';
+import 'package:part_wit/model/ModelRegister.dart';
 
 class ApiUrls {
   static const String apiBaseUrl = 'http://partwit.inditechitsolution.com/api/';
@@ -18,6 +19,10 @@ class ApiUrls {
   static const String sendForgotPasswordOtpMailUrl = apiBaseUrl + "send-forgot-password-otp-mail";
   static const String changeForgetPasswordUrl = apiBaseUrl + "change-forget-password";
   static const String updateUserDataUrl = apiBaseUrl + "update-user-data";
+  static const String sendForgotPasswordOtpMail = apiBaseUrl + "send-forgot-password-otp-mail";
+  static const String resendEmailVerificationOtp = apiBaseUrl + "resend-email-verification-otp";
+  static const String updateUserData = apiBaseUrl + "v1/update-user-data";
+
 
 }
 
@@ -26,7 +31,7 @@ logPrint(String logis) {
 }
 
 
-LoginModel? loginAndRegistrationresponse;
+ModeRegister? loginAndRegistrationresponse;
 
 messagetoastfalse(BuildContext context, String msg) {
   Fluttertoast.showToast(

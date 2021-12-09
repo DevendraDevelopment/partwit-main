@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:part_wit/repository/resend_otp_repository.dart';
+import 'package:part_wit/repository/verify_user_email_otp.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -9,23 +11,26 @@ import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
+import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/utility.dart';
 
 import 'package:pinput/pin_put/pin_put.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({Key? key}) : super(key: key);
+  String otptyp, email;
+   VerificationScreen(String this.email,String this.otptyp) : super();
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
+  State<VerificationScreen> createState() => _VerificationScreenState(email,otptyp);
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final verification_formKey = GlobalKey<FormState>();
-
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
+  String otptyp, email;
+  _VerificationScreenState(String this.email,String this.otptyp);
 
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -40,7 +45,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     final screenSize = MediaQuery.of(context).size;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
+   // String email = verificationtype[""];
+    //String type = verificationtype[""];
     final Object? rcvdData = ModalRoute.of(context)!.settings.arguments;
 
     print("rcvd fdata ${rcvdData}");
@@ -134,13 +140,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         54,
                         onPressed: () {
                           if (verification_formKey.currentState!.validate()) {
-
                             FocusScope.of(this.context).requestFocus(FocusNode());
-                            try {
-                              Get.toNamed(MyRouter.resetNewPasswordScreen);
-                            } on Exception catch (e) {
-                              e.printError();
-                            }
+                            Helpers.verifyInternet().then((intenet) {
+                              if (intenet != null && intenet) {
+                                Get.toNamed(MyRouter.createProfile,
+                                    arguments: Constant.PASS_VALUE);
+                               /* createVerifyUserEmailOtp(_pinPutController.text,context)
+                                    .then((response) {
+                                  setState(() {
+                                    if(response.status==true){
+                                      Get.toNamed(MyRouter.createProfile,
+                                          arguments: Constant.PASS_VALUE);
+                                    }
+                                  });
+                                });*/
+                              } else {
+                                Helpers.createSnackBar(context, "Please check your internet connection");
+                              }
+                            });
+
                           }
 
                         },
@@ -157,14 +175,37 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(
                   height: screenSize.height * 0.01,
                 ),
-                const LightTextBodyBlack(
-                  data: Constant.RESEND_CODE,
-                ),
+                ResendOtpButton(),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  InkWell ResendOtpButton() {
+    return InkWell(
+                onTap: (){
+                  Helpers.verifyInternet().then((intenet) {
+                    if (intenet != null && intenet) {
+                      createResendOtp(otptyp,email,context)
+                          .then((response) {
+                        setState(() {
+                          if(response.status==true){
+                           // Get.toNamed(MyRouter.createProfile,
+                             //   arguments: Constant.PASS_VALUE);
+                          }
+                        });
+                      });
+                    } else {
+                      Helpers.createSnackBar(context, "Please check your internet connection");
+                    }
+                  });
+                },
+                child: LightTextBodyBlack(
+                  data: Constant.RESEND_CODE,
+                ),
+              );
   }
 }
