@@ -12,6 +12,7 @@ import 'package:part_wit/ui/screens/settings.dart';
 import 'package:part_wit/ui/screens/signup_screen.dart';
 import 'package:part_wit/ui/screens/splash_screen.dart';
 import 'package:part_wit/ui/screens/user_edit_profile.dart';
+import 'package:part_wit/ui/screens/verification_forgetpassword_screen.dart';
 import 'package:part_wit/ui/screens/verification_screen.dart';
 import 'package:part_wit/ui/screens/welcom_screen.dart';
 import 'package:part_wit/ui/screens/your_review.dart';
@@ -23,6 +24,7 @@ class MyRouter {
   static var signupScreen = "/signup";
   static var resetNewPasswordScreen = "/resetNewPassword";
   static var verificationScreen = "/verificationScreen";
+  static var verificationForgetPasswordScreen = "/verificationForgetPasswordScreen";
   static var createProfile = "/createProfile";
   static var welcomeScreen = "/welcomeScreen";
   static var forgotPassword = "/forgotPassword";
@@ -40,11 +42,12 @@ class MyRouter {
     GetPage(name: MyRouter.locationScreen, page: () => const LocationScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.signupScreen, page: () => const SignUpScreen()),
+    GetPage(name: MyRouter.verificationForgetPasswordScreen, page: () =>  VerificationForgetPasswordScreen("","")),
     GetPage(name: MyRouter.verificationScreen, page: () =>  VerificationScreen("","")),
     GetPage(name: MyRouter.createProfile, page: () => const CreateProfile()),
     GetPage(name: MyRouter.welcomeScreen, page: () => const WelcomeScreen()),
     GetPage(name: MyRouter.forgotPassword, page: () => const ForgotPassword()),
-    GetPage(name: MyRouter.resetNewPasswordScreen, page: () => const ResetNewPassword()),
+    GetPage(name: MyRouter.resetNewPasswordScreen, page: () =>  ResetNewPassword(email: '',)),
     GetPage(name: MyRouter.userProfile, page: () => const UserProfile()),
     GetPage(name: MyRouter.saveItems, page: () => const SaveItems()),
     GetPage(name: MyRouter.editProfile, page: () => const EditProfile()),

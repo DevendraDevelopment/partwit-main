@@ -243,11 +243,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
                           borderRadius: BorderRadius.circular(15.0)),
                       suffixIcon: IconButton(
-                        icon: _showPassword
+                        icon: _showconfirmPassword
                             ? ImageIcon(AssetImage(MyImages.ic_eye_open))
                             : ImageIcon(AssetImage(MyImages.ic_eye_close)),
                         onPressed: () {
-                          setState(() => _showPassword = !_showPassword);
+                          setState(() => _showconfirmPassword = !_showconfirmPassword);
                         },
                       ),
                     ),
