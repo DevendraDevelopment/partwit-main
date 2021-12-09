@@ -63,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
                   height: screenSize.height * 0.03,
                 ),
                 LightTextHead(
-                  data: 'editProfile'.tr,
+                  data: 'Edit Profile'.tr,
                 ),
                 SizedBox(
                   height: screenSize.height * 0.05,
@@ -73,7 +73,7 @@ class _EditProfileState extends State<EditProfile> {
                   height: screenSize.height * 0.02,
                 ),
                 LightTextBody(
-                  data: 'changeProfilePhoto'.tr,
+                  data: 'Change Profile Photo'.tr,
                 ),
                 SizedBox(
                   height: screenSize.height * 0.04,
@@ -91,7 +91,7 @@ class _EditProfileState extends State<EditProfile> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15, top: 5),
                               child: LightTextBody(
-                                data: 'yourName'.tr,
+                                data: 'Your Name'.tr,
                               ),
                             ),
                             TextFormField(
@@ -105,7 +105,7 @@ class _EditProfileState extends State<EditProfile> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
-                                hintText: 'userName'.tr,
+                                hintText: 'Enter your name'.tr,
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                       color: MyAppTheme.buttonShadow_Color),
@@ -144,7 +144,7 @@ class _EditProfileState extends State<EditProfile> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15, top: 5),
                               child: LightTextBody(
-                                data: 'email_'.tr,
+                                data: 'Email'.tr,
                               ),
                             ),
                             TextFormField(
@@ -158,7 +158,7 @@ class _EditProfileState extends State<EditProfile> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
-                                hintText: 'userEmail'.tr,
+                                hintText: 'Enter your emial'.tr,
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                       color: MyAppTheme.buttonShadow_Color),

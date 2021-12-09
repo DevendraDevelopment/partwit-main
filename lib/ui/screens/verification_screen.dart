@@ -143,9 +143,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-                                Get.toNamed(MyRouter.createProfile,
-                                    arguments: Constant.PASS_VALUE);
-                               /* createVerifyUserEmailOtp(_pinPutController.text,context)
+                                // Get.toNamed(MyRouter.createProfile,
+                                //     arguments: Constant.PASS_VALUE);
+                                createVerifyUserEmailOtp(_pinPutController.text,context)
                                     .then((response) {
                                   setState(() {
                                     if(response.status==true){
@@ -153,7 +153,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           arguments: Constant.PASS_VALUE);
                                     }
                                   });
-                                });*/
+                                });
                               } else {
                                 Helpers.createSnackBar(context, "Please check your internet connection");
                               }

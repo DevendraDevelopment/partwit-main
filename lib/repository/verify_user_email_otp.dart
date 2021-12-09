@@ -21,7 +21,7 @@ Future<CommonResponse> createVerifyUserEmailOtp(
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var url;
-  url = Uri.parse(ApiUrls.verifyUserEmailOtpUrl);
+  // url = Uri.parse(ApiUrls.verifyUserEmailOtpUrl);
   var map = new Map<String, dynamic>();
   map['otp'] = otp;
   http.Response response = await http.post(
@@ -40,10 +40,9 @@ Future<CommonResponse> createVerifyUserEmailOtp(
     } else{
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
     }
-
   } else {
     Helpers.hideLoader(loader);
-    Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
+    Helpers.createSnackBar(context, "Response Code : "+response.statusCode.toString());
     throw Exception(response.body);
 
   }

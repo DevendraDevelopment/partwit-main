@@ -259,6 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Constant.USER_LOGIN,
                         54,
                         onPressed: () {
+                          // Get.toNamed(MyRouter.createProfile);
                           if (login_formKey.currentState!.validate()) {
                             _isEmailFocus = false;
                             _isPasswordFocus = false;
@@ -329,7 +330,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () {
                         _handleSignIn();
-                        print("USER :: " + _currentUser!.email);
+                        print("EMAIL :: " + _currentUser!.email);
+                        Helpers.createSnackBar(context, "EMAIL :: " + _currentUser!.email);
                       }, // handle your image tap here
                       child: Image.asset(
                         MyImages.ic_gplus,

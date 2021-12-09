@@ -205,12 +205,12 @@ class _CreateProfileState extends State<CreateProfile> {
     final imageTemporary = File(_imageFile.path);
     this._imageFile = imageTemporary;
 
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      this._imageFile = imageTemporary;
-
-      // Your Code
-    });
-    // setState(() => this._imageFile = imageTemporary);
+    // SchedulerBinding.instance!.addPostFrameCallback((_) {
+    //   this._imageFile = imageTemporary;
+    //
+    //   Your Code
+    // });
+    setState(() => this._imageFile = imageTemporary);
   }
 
   getImageWidget() {

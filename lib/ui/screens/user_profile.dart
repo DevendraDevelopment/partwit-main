@@ -42,13 +42,13 @@ class _UserProfileState extends State<UserProfile> {
               height: screenSize.height * 0.02,
             ),
             LightTextHead(
-              data: 'userName'.tr,
+              data: 'User Name'.tr,
             ),
             SizedBox(
               height: screenSize.height * 0.01,
             ),
             LightTextSubHead(
-              data: 'userEmail'.tr,
+              data: 'User Email'.tr,
             ),
             SizedBox(
               height: screenSize.height * 0.01,
