@@ -187,8 +187,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       width: screenSize.height * 0.01,
                     ),
-                    const LightTextBodyBlack(
-                      data: Constant.SIGNUP_HERE,
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(MyRouter.signupScreen);
+                      },
+                      child:  LightTextBodyBlack(
+                        data: Constant.SIGNUP_HERE,
+                      ),
                     )
                   ],
                 ),

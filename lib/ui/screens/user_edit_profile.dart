@@ -13,6 +13,7 @@ import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
+import 'package:part_wit/utiles/constaint.dart';
 import 'package:part_wit/utiles/utility.dart';
 
 class EditProfile extends StatefulWidget {
@@ -26,7 +27,17 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
-
+  TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _usernameController.text = loginAndRegistrationresponse!.userInfo!.name;
+      _emailController.text = loginAndRegistrationresponse!.userInfo!.email;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -101,7 +112,7 @@ class _EditProfileState extends State<EditProfile> {
                                   fontSize: 14),
                               enabled: true,
                               obscureText: false,
-                              //  controller: emailController,
+                                controller: _usernameController,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
@@ -154,7 +165,7 @@ class _EditProfileState extends State<EditProfile> {
                                   fontSize: 14),
                               enabled: true,
                               obscureText: false,
-                              //  controller: emailController,
+                              controller: _emailController,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
@@ -264,8 +275,7 @@ class _EditProfileState extends State<EditProfile> {
           radius: 60,
           child: CircleAvatar(
             radius: 60,
-            backgroundImage: AssetImage(MyImages
-                    .ic_person //Convert File type of image to asset image path),
+            backgroundImage: AssetImage(MyImages.ic_person //Convert File type of image to asset image path),
                 ),
           ));
     }

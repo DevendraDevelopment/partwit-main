@@ -388,8 +388,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: screenSize.height * 0.01,
                     ),
-                    const LightTextBodyBlack(
-                      data: Constant.SIGNIN_HERE,
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(MyRouter.loginScreen);
+                      },
+                      child: LightTextBodyBlack(
+                        data: Constant.SIGNIN_HERE,
+                      ),
                     )
                   ],
                 ),

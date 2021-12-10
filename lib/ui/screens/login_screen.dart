@@ -349,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const LightTextBody(data: Constant.ALREADY_AN_ACC),
+                    const LightTextBody(data: Constant.DONT_HAVE),
                     SizedBox(
                       width: screenSize.height * 0.01,
                     ),
@@ -362,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                         child: const LightTextSubHead(
-                          data: Constant.SIGNIN_HERE,
+                          data: Constant.SIGNUP_HERE,
                         ))
                   ],
                 ),

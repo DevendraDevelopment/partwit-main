@@ -10,6 +10,8 @@ import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/utiles/constant.dart';
+//import 'package:permission_handler/permission_handler.dart';
+//import 'package:location_permissions/location_permissions.dart';
 
 
 class LocationScreen extends StatefulWidget {
@@ -21,14 +23,19 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   final _unqKey = UniqueKey();
-
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     super.dispose();
   }
-
+ /* _checkPermission() async {
+    PermissionStatus permission = await LocationPermissions().requestPermissions();
+    ServiceStatus serviceStatus = await LocationPermissions().checkServiceStatus();
+    if (serviceStatus == ServiceStatus.disabled) {
+      bool isOpened = await LocationPermissions().openAppSettings();
+    }
+  }*/
   @override
   initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -88,8 +95,9 @@ class _LocationScreenState extends State<LocationScreen> {
                   54,
                    onPressed: (){
                      try {
-                       Get.toNamed(MyRouter.loginScreen);
-                       //Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
+                      // _checkPermission();
+                      // Get.toNamed(MyRouter.loginScreen);
+                       Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
                      } on Exception catch (e) {
                        e.printError();
                      }
@@ -121,4 +129,23 @@ class _LocationScreenState extends State<LocationScreen> {
       ),
     );
   }
+
+ /* Future<void> requestLocationPermission() async {
+
+    final serviceStatusLocation = await Permission.locationWhenInUse.isGranted ;
+
+    bool isLocation = serviceStatusLocation == ServiceStatus.enabled;
+
+    final status = await Permission.locationWhenInUse.request();
+
+    if (status == PermissionStatus.granted) {
+      print('Permission Granted');
+    } else if (status == PermissionStatus.denied) {
+      print('Permission denied');
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      print('Permission Permanently Denied');
+      await openAppSettings();
+    }
+  }*/
+
 }

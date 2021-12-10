@@ -144,9 +144,7 @@ class _VerificationForgetPasswordScreenState extends State<VerificationForgetPas
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-                                Get.toNamed(MyRouter.resetNewPasswordScreen,
-                                    arguments: email);
-                               /* createVerifyForgetPasswordOtp(_pinPutController.text,context)
+                                createVerifyForgetPasswordOtp(_pinPutController.text,context)
                                     .then((response) {
                                   setState(() {
                                     if(response.status==true){
@@ -154,7 +152,7 @@ class _VerificationForgetPasswordScreenState extends State<VerificationForgetPas
                                           arguments: Constant.PASS_VALUE);
                                     }
                                   });
-                                });*/
+                                });
                               } else {
                                 Helpers.createSnackBar(context, "Please check your internet connection");
                               }
@@ -194,8 +192,8 @@ class _VerificationForgetPasswordScreenState extends State<VerificationForgetPas
                           .then((response) {
                         setState(() {
                           if(response.status==true){
-                           // Get.toNamed(MyRouter.createProfile,
-                             //   arguments: Constant.PASS_VALUE);
+                            // Get.toNamed(MyRouter.createProfile,
+                            //   arguments: Constant.PASS_VALUE);
                           }
                         });
                       });
