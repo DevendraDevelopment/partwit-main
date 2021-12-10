@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 class MyAppTheme {
   MyAppTheme._();
 
-
-
-
   static const backgroundColor = Color(0xFFFED001);
   static const failRed = Color(0xFFF31B32);
 
@@ -21,6 +18,9 @@ class MyAppTheme {
 
   static const items_bg_Color = Color(0xFFF5F5F5);
   static const plan_bg_Color = Color(0xFFFF5F5F5);
+  static const textfield_bg_grayColor = Color(0xFFF2F2EF);
+  //plan box colors
+  static const box_bg_grayColor = Color(0xFFD5D5D5);
 
   static final ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: backgroundColor,

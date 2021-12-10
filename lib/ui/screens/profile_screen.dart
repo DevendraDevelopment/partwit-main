@@ -21,7 +21,9 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -35,8 +37,8 @@ class _UserProfileState extends State<UserProfile> {
                 child: CircleAvatar(
                   radius: 60,
                   backgroundImage: AssetImage(MyImages
-                          .logo //Convert File type of image to asset image path),
-                      ),
+                      .logo //Convert File type of image to asset image path),
+                  ),
                 )),
             SizedBox(
               height: screenSize.height * 0.02,
@@ -101,7 +103,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             InkWell(
               onTap: () {
@@ -130,7 +132,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             InkWell(
               onTap: () {
@@ -159,12 +161,12 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             InkWell(
               onTap: () {
                 Get.toNamed(MyRouter.yourReview);
-                },
+              },
               child: Container(
                   margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   child: ClipRRect(
@@ -188,7 +190,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             InkWell(
               onTap: () {
@@ -217,7 +219,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             InkWell(
               onTap: () {
@@ -246,7 +248,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-                  ),
+              ),
             ),
             Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -279,29 +281,34 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ],
                           ),
-                          Container(
-                              margin: const EdgeInsets.all(30),
-                              width: 100,
-                              height: 30,
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                child: Container(
-                                  color: MyAppTheme.backgroundColor,
-                                  child: Center(
-                                    child: LightTextBody(
-                                      data: 'Update'.tr,
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(MyRouter.planScreen);
+                            },
+                            child:Container(
+                                margin: const EdgeInsets.all(30),
+                                width: 100,
+                                height: 30,
+                                child: ClipRRect(
+                                  borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                                  child: Container(
+                                    color: MyAppTheme.backgroundColor,
+                                    child: Center(
+                                      child: LightTextBody(
+                                        data: 'Update'.tr,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ) // This trailing comma makes auto-formatting nicer for build methods.
-                              )
+                                ) // This trailing comma makes auto-formatting nicer for build methods.
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ) // This trailing comma makes auto-formatting nicer for build methods.
-                ),
+            ),
           ],
         ),
       ),

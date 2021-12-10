@@ -14,7 +14,7 @@ class ApiUrls {
   static const String registerUrl = apiBaseUrl + "register";
   static const String socialLoginUrl = apiBaseUrl + "social-login";
   static const String logoutUrl = apiBaseUrl + "logout";
-  static const String verifyUserEmailOtpUrl = apiBaseUrl + "verify-user-email-otp";
+  static const String verifyUserEmailOtpUrl = apiBaseUrl + "v1/verify-user-email-otp";
   static const String resendEmailVerificationOtpUrl = apiBaseUrl + "resend-email-verification-otp";
   static const String sendForgotPasswordOtpMailUrl = apiBaseUrl + "send-forgot-password-otp-mail";
   static const String changeForgetPasswordUrl = apiBaseUrl + "change-forget-password";
@@ -31,6 +31,10 @@ logPrint(String logis) {
   log(logis);
 }
 
+// <<<<<<< DEVEN
+// LoginModel? loginAndRegistrationresponse;
+// =======
+// >>>>>>> master
 
 ModeRegister? loginAndRegistrationresponse;
 
