@@ -3,6 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/repository/resend_otp_repository.dart';
+import 'package:part_wit/repository/verify_forget_password_otp.dart';
 import 'package:part_wit/repository/verify_user_email_otp.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
@@ -17,20 +18,20 @@ import 'package:part_wit/utiles/utility.dart';
 
 import 'package:pinput/pin_put/pin_put.dart';
 
-class VerificationScreen extends StatefulWidget {
+class VerificationForgetPasswordScreen extends StatefulWidget {
   String otptyp, email;
-   VerificationScreen(String this.email,String this.otptyp) : super();
+  VerificationForgetPasswordScreen(String this.email,String this.otptyp) : super();
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState(email,otptyp);
+  State<VerificationForgetPasswordScreen> createState() => _VerificationForgetPasswordScreenState(email,otptyp);
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerificationForgetPasswordScreenState extends State<VerificationForgetPasswordScreen> {
   final verification_formKey = GlobalKey<FormState>();
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
   String otptyp, email;
-  _VerificationScreenState(String this.email,String this.otptyp);
+  _VerificationForgetPasswordScreenState(String this.email,String this.otptyp);
 
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -143,18 +144,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-// <<<<<<< DEVEN
-//                                 // Get.toNamed(MyRouter.createProfile,
-//                                 //     arguments: Constant.PASS_VALUE);
-// =======
-                                Get.toNamed(MyRouter.createProfile,
-                                    arguments: Constant.PASS_VALUE);
-// >>>>>>> master
-                                createVerifyUserEmailOtp(_pinPutController.text,context)
+                                createVerifyForgetPasswordOtp(_pinPutController.text,context)
                                     .then((response) {
                                   setState(() {
                                     if(response.status==true){
-                                      Get.toNamed(MyRouter.createProfile,
+                                      Get.toNamed(MyRouter.resetNewPasswordScreen,
                                           arguments: Constant.PASS_VALUE);
                                     }
                                   });
@@ -198,8 +192,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           .then((response) {
                         setState(() {
                           if(response.status==true){
-                           // Get.toNamed(MyRouter.createProfile,
-                             //   arguments: Constant.PASS_VALUE);
+                            // Get.toNamed(MyRouter.createProfile,
+                            //   arguments: Constant.PASS_VALUE);
                           }
                         });
                       });

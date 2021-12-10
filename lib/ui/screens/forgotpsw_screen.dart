@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/repository/forgot_password_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/verification_forgetpassword_screen.dart';
 import 'package:part_wit/ui/screens/verification_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -151,7 +152,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     if(response.status==true){
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
+                                        MaterialPageRoute(builder: (context) => VerificationForgetPasswordScreen(_emailController.text,Constant.FORGET_PASSWORD)),
                                       );
                                       /*Map<String, String> map = {
                                         "email": _emailController.text,
@@ -186,8 +187,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       width: screenSize.height * 0.01,
                     ),
-                    const LightTextBodyBlack(
-                      data: Constant.SIGNUP_HERE,
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(MyRouter.signupScreen);
+                      },
+                      child:  LightTextBodyBlack(
+                        data: Constant.SIGNUP_HERE,
+                      ),
                     )
                   ],
                 ),

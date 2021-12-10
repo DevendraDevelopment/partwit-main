@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
+import 'package:part_wit/repository/verify_reset_password.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -13,10 +14,11 @@ import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/utility.dart';
 import 'package:get/get_core/src/get_main.dart';
 class ResetNewPassword extends StatefulWidget {
-  const ResetNewPassword({Key? key}) : super(key: key);
+  String email;
+  ResetNewPassword({Key? key,required String this.email}) : super(key: key);
 
   @override
-  _ResetNewPasswordState createState() => _ResetNewPasswordState();
+  _ResetNewPasswordState createState() => _ResetNewPasswordState(email);
 }
 
 class _ResetNewPasswordState extends State<ResetNewPassword> {
@@ -26,6 +28,8 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
   TextEditingController _confrimpasswordController = new TextEditingController();
   FocusNode passWordFocus = new FocusNode();
   FocusNode confrmPassWordFocus = new FocusNode();
+  String email;
+  _ResetNewPasswordState(String this.email);
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -111,7 +115,7 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                       fillColor: MyAppTheme.buttonShadow_Color,
                       hintText: Constant.USER_PASSWORD,
                       prefixIcon:  Image.asset(MyImages.ic_padlock),
-                      suffixIcon: Image.asset(MyImages.ic_eye_close),
+                     // suffixIcon: Image.asset(MyImages.ic_eye_close),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
                         const BorderSide(color: MyAppTheme.buttonShadow_Color),
@@ -125,7 +129,16 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                           borderSide: const BorderSide(
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
                           borderRadius: BorderRadius.circular(15.0)),
+                      suffixIcon: IconButton(
+                        icon: _showPassword
+                            ? ImageIcon(AssetImage(MyImages.ic_eye_open))
+                            : ImageIcon(AssetImage(MyImages.ic_eye_close)),
+                        onPressed: () {
+                          setState(() => _showPassword = !_showPassword);
+                        },
+                      ),
                     ),
+
                   ),
                 ),
                 Padding(
@@ -161,7 +174,7 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                       fillColor: MyAppTheme.buttonShadow_Color,
                       hintText: Constant.CONFIRM_PSW,
                       prefixIcon:Image.asset(MyImages.ic_padlock),
-                      suffixIcon: Image.asset(MyImages.ic_eye_open),
+                      //suffixIcon: Image.asset(MyImages.ic_eye_open),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
                         const BorderSide(color: MyAppTheme.buttonShadow_Color),
@@ -175,6 +188,14 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                           borderSide: const BorderSide(
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
                           borderRadius: BorderRadius.circular(15.0)),
+                      suffixIcon: IconButton(
+                        icon: _showconfirmPassword
+                            ? ImageIcon(AssetImage(MyImages.ic_eye_open))
+                            : ImageIcon(AssetImage(MyImages.ic_eye_close)),
+                        onPressed: () {
+                          setState(() => _showconfirmPassword = !_showconfirmPassword);
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -198,11 +219,20 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                             _isConfirmPasswordFocus = false;
                             _isPasswordFocus = false;
                             FocusScope.of(this.context).requestFocus(FocusNode());
-                            try {
+                            createResetNewPassword(email,_passwordController.text,_confrimpasswordController.text,context)
+                                    .then((response) {
+                                  setState(() {
+                                    if(response.status==true){
+                                      Get.toNamed(MyRouter.loginScreen,
+                                          arguments: Constant.PASS_VALUE);
+                                    }
+                                  });
+                                });
+                           /* try {
                               Get.toNamed(MyRouter.homeScreen);
                             } on Exception catch (e) {
                               e.printError();
-                            }
+                            }*/
                           }
                         },
                       ),
