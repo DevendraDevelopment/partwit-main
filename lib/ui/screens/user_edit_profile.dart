@@ -35,9 +35,11 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
     setState(() {
+      imgurl = loginAndRegistrationresponse!.userInfo!.profilePic;
+      print("image$loginAndRegistrationresponse!.userInfo!.profilePic");
       _usernameController.text = loginAndRegistrationresponse!.userInfo!.name;
       _emailController.text = loginAndRegistrationresponse!.userInfo!.email;
-      imgurl = loginAndRegistrationresponse!.userInfo!.profilePic;
+
     });
   }
   @override
@@ -231,7 +233,7 @@ class _EditProfileState extends State<EditProfile> {
             },
             child:imgurl != null ?CircleAvatar(
               radius: 60.0,
-              backgroundImage: AssetImage(imgurl!)
+              backgroundImage: NetworkImage(imgurl!)
             ) : getImageWidget(),
           )),
           Positioned(
@@ -241,9 +243,10 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 OpenSheet();
               },
-              child: SvgPicture.asset(
-                MyImages.ic_app_logo,
-                allowDrawingOutsideViewBox: true,
+              child: const Icon(
+                Icons.add_circle_outline,
+                color: Colors.black,
+                size: 28,
               ),
             ),
           ),

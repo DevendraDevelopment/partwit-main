@@ -32,7 +32,7 @@ class Constant {
   static const TERMS = 'Terms & Condition';
   static const AND = 'and';
   static const POLICY = 'Privacy Policy';
-
+  static const String is_logged_in = "isLoggedIn";
   static const CONFIRM_PSW = 'Confirm Password';
   static const REGISTER = 'Register';
   static const RESETNEWPASSWORD = 'Set New Password';
