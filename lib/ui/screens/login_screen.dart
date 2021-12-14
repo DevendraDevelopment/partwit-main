@@ -201,8 +201,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter password';
-                      } else if (value.length < 5) {
-                        return 'Password must be greater then 5';
+                      }else if (value.length < 8) {
+                        return 'Password must be greater then 8';
+                      } else if (value.length > 20){
+                        return 'Password must be less then 20';
                       }
                       return null;
                     },
@@ -259,8 +261,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Constant.USER_LOGIN,
                         54,
                         onPressed: () {
-                          // Get.toNamed(MyRouter.createProfile);
-                          if (login_formKey.currentState!.validate()) {
+                          Get.toNamed(MyRouter.createProfile);
+                          /*if (login_formKey.currentState!.validate()) {
                             _isEmailFocus = false;
                             _isPasswordFocus = false;
                             FocusScope.of(this.context)
@@ -279,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "Please check your internet connection");
                               }
                             });
-                          }
+                          }*/
                         },
                       ),
                     ],

@@ -10,6 +10,7 @@ import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/ui/widgets/light_text_title.dart';
+import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/utility.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -219,15 +220,24 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                             _isConfirmPasswordFocus = false;
                             _isPasswordFocus = false;
                             FocusScope.of(this.context).requestFocus(FocusNode());
-                            createResetNewPassword(email,_passwordController.text,_confrimpasswordController.text,context)
-                                    .then((response) {
-                                  setState(() {
-                                    if(response.status==true){
-                                      Get.toNamed(MyRouter.loginScreen,
-                                          arguments: Constant.PASS_VALUE);
-                                    }
-                                  });
+                            if(_passwordController.text==_confrimpasswordController.text){
+                              createResetNewPassword(email,_passwordController.text,_confrimpasswordController.text,context)
+                                  .then((response) {
+                                setState(() {
+                                  if(response.status==true){
+                                    Get.toNamed(MyRouter.loginScreen,
+                                        arguments: Constant.PASS_VALUE);
+                                  }else{
+                                    Helpers.createSnackBar(context,
+                                        "status false");
+                                  }
                                 });
+                              });
+                            }else{
+                              Helpers.createSnackBar(context,
+                                  "Your Password Don't Match");
+                            }
+
                            /* try {
                               Get.toNamed(MyRouter.homeScreen);
                             } on Exception catch (e) {

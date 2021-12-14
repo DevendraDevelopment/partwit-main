@@ -6,6 +6,7 @@ import 'package:part_wit/repository/resend_otp_repository.dart';
 import 'package:part_wit/repository/verify_forget_password_otp.dart';
 import 'package:part_wit/repository/verify_user_email_otp.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/reset_new_password.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
@@ -85,8 +86,8 @@ class _VerificationForgetPasswordScreenState extends State<VerificationForgetPas
                 SizedBox(
                   height: screenSize.height * 0.01,
                 ),
-                const LightTextBody(
-                  data: Constant.SEND_VERIFICATION,
+                 LightTextBody(
+                  data: Constant.SEND_VERIFICATION+email,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(
@@ -148,8 +149,10 @@ class _VerificationForgetPasswordScreenState extends State<VerificationForgetPas
                                     .then((response) {
                                   setState(() {
                                     if(response.status==true){
-                                      Get.toNamed(MyRouter.resetNewPasswordScreen,
-                                          arguments: Constant.PASS_VALUE);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => ResetNewPassword(email: email,)),
+                                      );
                                     }
                                   });
                                 });

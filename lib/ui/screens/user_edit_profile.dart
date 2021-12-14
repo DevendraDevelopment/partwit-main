@@ -29,13 +29,17 @@ class _EditProfileState extends State<EditProfile> {
   File? _imageFile;
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
+  String? imgurl;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
+      imgurl = loginAndRegistrationresponse!.userInfo!.profilePic;
+      print("image$loginAndRegistrationresponse!.userInfo!.profilePic");
       _usernameController.text = loginAndRegistrationresponse!.userInfo!.name;
       _emailController.text = loginAndRegistrationresponse!.userInfo!.email;
+
     });
   }
   @override
@@ -163,7 +167,7 @@ class _EditProfileState extends State<EditProfile> {
                                   color: MyAppTheme.textPrimary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14),
-                              enabled: true,
+                              enabled: false,
                               obscureText: false,
                               controller: _emailController,
                               decoration: InputDecoration(
@@ -227,7 +231,10 @@ class _EditProfileState extends State<EditProfile> {
             onTap: () {
               OpenSheet();
             },
-            child: getImageWidget(),
+            child:imgurl != null ?CircleAvatar(
+              radius: 60.0,
+              backgroundImage: NetworkImage(imgurl!)
+            ) : getImageWidget(),
           )),
           Positioned(
             bottom: 8,
@@ -236,9 +243,10 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 OpenSheet();
               },
-              child: SvgPicture.asset(
-                MyImages.ic_app_logo,
-                allowDrawingOutsideViewBox: true,
+              child: const Icon(
+                Icons.add_circle_outline,
+                color: Colors.black,
+                size: 28,
               ),
             ),
           ),

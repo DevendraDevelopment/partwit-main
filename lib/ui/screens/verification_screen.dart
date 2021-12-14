@@ -143,13 +143,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-// <<<<<<< DEVEN
-//                                 // Get.toNamed(MyRouter.createProfile,
-//                                 //     arguments: Constant.PASS_VALUE);
-// =======
                                 Get.toNamed(MyRouter.createProfile,
                                     arguments: Constant.PASS_VALUE);
-// >>>>>>> master
                                 createVerifyUserEmailOtp(_pinPutController.text,context)
                                     .then((response) {
                                   setState(() {
