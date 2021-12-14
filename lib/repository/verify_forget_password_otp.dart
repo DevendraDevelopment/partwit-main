@@ -22,12 +22,12 @@ Future<CommonResponse> createVerifyForgetPasswordOtp(
   Overlay.of(context)!.insert(loader);
   var url;
   url = Uri.parse(ApiUrls.verifyForgetPasswordOtp);
+  bool forget = true;
   var map = new Map<String, dynamic>();
-  map['forget_password'] = true;
+  map['forget_password'] = forget.toString();
   map['otp'] = otp;
   http.Response response = await http.post(
     url,
-    //headers: {'Authorization':"Bearer "+loginAndRegistrationresponse!.token},
     body: map,
   );
 

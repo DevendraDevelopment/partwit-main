@@ -30,6 +30,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
   String otptyp, email;
+ bool _isAgreeCheckBox = true;
   _VerificationScreenState(String this.email,String this.otptyp);
 
   BoxDecoration get _pinPutDecoration {
@@ -73,7 +74,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   height: screenSize.height * 0.03,
                 ),
                 const LightTextHead(
-                  data: Constant.VERIFICATION,
+                  data: Constant.STEPVERIFICATION,
                 ),
                 SizedBox(
                   height: screenSize.height * 0.05,
@@ -84,8 +85,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(
                   height: screenSize.height * 0.01,
                 ),
-                const LightTextBody(
-                  data: Constant.SEND_VERIFICATION,
+                 LightTextBody(
+                  data: Constant.SEND_VERIFICATION+email,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(
@@ -123,13 +124,36 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: screenHeight * 0.04,
+                        height: screenSize.height * 0.01,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            activeColor: Colors.yellow,
+                            value: this._isAgreeCheckBox,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                this._isAgreeCheckBox = value!;
+                              });
+                            },
+                          ),
+                          /*CustomCheckbox(
+                      key: signupkey_formKey,
+                    ),*/
+                          SizedBox(
+                            width: screenSize.height * 0.001,
+                          ),
+                          const LightTextBody(data: Constant.DONT),
+
+                        ],
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.height * 0.05,
+                  height: screenSize.height * 0.03,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -143,14 +167,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-                                Get.toNamed(MyRouter.createProfile,
-                                    arguments: Constant.PASS_VALUE);
                                 createVerifyUserEmailOtp(_pinPutController.text,context)
                                     .then((response) {
                                   setState(() {
                                     if(response.status==true){
-                                      Get.toNamed(MyRouter.createProfile,
-                                          arguments: Constant.PASS_VALUE);
+                                      Get.toNamed(MyRouter.createProfile);
+                                    }else{
+                                    //  Get.toNamed(MyRouter.createProfile);
                                     }
                                   });
                                 });

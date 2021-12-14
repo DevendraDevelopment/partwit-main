@@ -7,14 +7,14 @@ import 'package:part_wit/utiles/constant.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:part_wit/utiles/light_text_body_bold.dart';
-class Privacypolicy extends StatefulWidget {
-  const Privacypolicy({Key? key}) : super(key: key);
+class TermsCondition extends StatefulWidget {
+  const TermsCondition({Key? key}) : super(key: key);
 
   @override
-  _PrivacypolicyState createState() => _PrivacypolicyState();
+  _TermsConditionState createState() => _TermsConditionState();
 }
 
-class _PrivacypolicyState extends State<Privacypolicy> {
+class _TermsConditionState extends State<TermsCondition> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +49,7 @@ class _PrivacypolicyState extends State<Privacypolicy> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(height: 10,),
-                    const LightTextBodyBold(data: Constant.POLICY),
+                    const LightTextBodyBold(data: Constant.TERMS),
                     SizedBox(height: 10,),
                     const LightTextBody(data: Constant.PRIVACYPOLICY),
                     SizedBox(height: 20,),

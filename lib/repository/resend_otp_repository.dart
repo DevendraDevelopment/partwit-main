@@ -27,7 +27,7 @@ Future<CommonResponse> createResendOtp(
   map['type'] = type;
   http.Response response = await http.post(
     url,
-    headers: {'Authorization':"Bearer "+loginAndRegistrationresponse!.token},
+    //headers: {'Authorization':"Bearer "+loginAndRegistrationresponse!.token},
     body: map,
   );
 

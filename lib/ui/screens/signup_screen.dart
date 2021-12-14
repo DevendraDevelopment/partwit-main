@@ -36,11 +36,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isPasswordFocus = false,
       _isEmailFocus = false,
       _isConfirmPasswordFocus = false,
-      _isAgreeCheckBox = false;
+      _isAgreeCheckBox = true;
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
-  TextEditingController _confrimpasswordController =
-      new TextEditingController();
+  TextEditingController _confrimpasswordController = new TextEditingController();
   FocusNode passWordFocus = new FocusNode();
   FocusNode confrmPassWordFocus = new FocusNode();
   FocusNode emailFocus = new FocusNode();
@@ -203,6 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: MyAppTheme.textPrimary,
                         fontWeight: FontWeight.normal,
                         fontSize: 14),
+                    controller: _confrimpasswordController,
                     obscureText: !this._showconfirmPassword,
                     focusNode: confrmPassWordFocus,
                     onTap: () {
@@ -215,7 +215,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter password';
+                        return 'Please enter Confirm password';
                       } else if (value.length < 5) {
                         return 'Password must be greater then 5';
                       }
@@ -279,9 +279,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
-                    const LightTextBodyBlack(
-                      data: Constant.TERMS,
-                    ),
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(MyRouter.termscondition);
+                      },
+                      child:LightTextBodyBlack(
+                        data: Constant.TERMS,
+                      ) ,
+                    ) ,
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
@@ -289,7 +294,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
-                    const LightTextBodyBlack(data: Constant.POLICY),
+                     InkWell(
+                       onTap: (){
+                         Get.toNamed(MyRouter.privacypolicy);
+                       },
+                       child: LightTextBodyBlack(data: Constant.POLICY),
+                     )
+                     ,
                   ],
                 ),
                 SizedBox(
@@ -316,30 +327,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 .requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet) {
-                                createRegister(_emailController.text,
-                                        _passwordController.text, context)
-                                    .then((response) {
-                                  setState(() {
-                                    model = response;
-                                    loginAndRegistrationresponse = response;
-                                    print(loginAndRegistrationresponse!.token);
-                                    Helpers.createSnackBar(context,
-                                        "Response :: "+model.toString());
-                                    if (model!.status) {
-                                      print("Response  " + model.toString());
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
-                                      );
-                                     /* Map<String, String> map = {
+                                if(_passwordController.text == _confrimpasswordController.text){
+                                  createRegister(_emailController.text, _passwordController.text, context).then((response) {
+                                    setState(() {
+                                      model = response;
+                                      loginAndRegistrationresponse = response;
+                                      print(loginAndRegistrationresponse!.token);
+                                      Helpers.createSnackBar(context,
+                                          "Response :: "+model.toString());
+                                      if (model!.status) {
+                                        print("Response  " + model.toString());
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
+                                        );
+                                        /* Map<String, String> map = {
                                         "email": _emailController.text,
                                         "type": Constant.REGISTRATION_OTP,
                                       };
                                       Get.toNamed(MyRouter.verificationScreen,
                                           parameters: map);*/
-                                    }
+                                      }
+                                    });
                                   });
-                                });
+                                }else{
+                                  Helpers.createSnackBar(context,
+                                      "Your Password Don't Match");
+                                }
+
                               } else {
                                 Helpers.createSnackBar(context,
                                     "Please check your internet connection");

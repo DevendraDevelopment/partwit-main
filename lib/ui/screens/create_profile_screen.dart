@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:part_wit/repository/update_user_profile_repository.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
@@ -137,7 +140,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                         _nameController.text, context)
                                     .then((response) {
                                   setState(() {
-
+                                    Get.toNamed(MyRouter.welcomeScreen);
                                   });
                                 });
                               } else {
@@ -204,15 +207,8 @@ class _CreateProfileState extends State<CreateProfile> {
 
     final imageTemporary = File(_imageFile.path);
     this._imageFile = imageTemporary;
-
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      this._imageFile = imageTemporary;
-
-      // Your Code
-    });
-    // setState(() => this._imageFile = imageTemporary);
+    setState(() => this._imageFile = imageTemporary);
   }
-
   getImageWidget() {
     if (_imageFile != null) {
       Navigator.pop(context);

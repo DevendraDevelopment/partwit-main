@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:get/get.dart';
 import '../routers/my_router.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -18,13 +18,28 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(_duration, navigationToWelcomeScreen);
   }
 
-  void navigationToWelcomeScreen() {
-    try {
-      // Get.toNamed(MyRouter.loginScreen);
+  void navigationToWelcomeScreen() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+    SharedPreferences prefs1 = await SharedPreferences.getInstance();
+    String id=prefs1.getString('id')??'';
+    if (_seen) {
+       if(id==null||id==''){
+         Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
+       }
+       else{
+         Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+       }
+    }else{
+      await prefs.setBool('seen', true);
       Navigator.pushReplacementNamed(context, MyRouter.locationScreen);
+    }
+   /* try {
+      // Get.toNamed(MyRouter.loginScreen);
+
     } on Exception catch (e) {
       e.printError();
-    }
+    }*/
   }
 
   @override

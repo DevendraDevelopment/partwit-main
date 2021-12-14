@@ -13,6 +13,7 @@ import 'package:part_wit/utiles/constaint.dart';
 
 import '../repository/user_repository.dart' as userRepo;
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<ModeRegister> createLogin(
     String email, String password, BuildContext context) async
@@ -37,6 +38,8 @@ Future<ModeRegister> createLogin(
     status=json.decode(response.body)['status'];
     if(status==true){
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
+      SharedPreferences prefs1 = await SharedPreferences.getInstance();
+      prefs1.setString("id", json.decode(response.body)['user_info']['id'].toString());
       return ModeRegister.fromJson(json.decode(response.body));
     } else{
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());

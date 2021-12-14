@@ -29,6 +29,7 @@ class _EditProfileState extends State<EditProfile> {
   File? _imageFile;
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
+  String? imgurl;
   @override
   void initState() {
     // TODO: implement initState
@@ -36,6 +37,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _usernameController.text = loginAndRegistrationresponse!.userInfo!.name;
       _emailController.text = loginAndRegistrationresponse!.userInfo!.email;
+      imgurl = loginAndRegistrationresponse!.userInfo!.profilePic;
     });
   }
   @override
@@ -163,7 +165,7 @@ class _EditProfileState extends State<EditProfile> {
                                   color: MyAppTheme.textPrimary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14),
-                              enabled: true,
+                              enabled: false,
                               obscureText: false,
                               controller: _emailController,
                               decoration: InputDecoration(
@@ -227,7 +229,10 @@ class _EditProfileState extends State<EditProfile> {
             onTap: () {
               OpenSheet();
             },
-            child: getImageWidget(),
+            child:imgurl != null ?CircleAvatar(
+              radius: 60.0,
+              backgroundImage: AssetImage(imgurl!)
+            ) : getImageWidget(),
           )),
           Positioned(
             bottom: 8,
