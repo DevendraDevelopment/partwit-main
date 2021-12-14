@@ -112,7 +112,7 @@ class Helpers {
   }
   static createSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 5),
       backgroundColor: MyAppTheme.black_Color,
       content: Text(
         message,

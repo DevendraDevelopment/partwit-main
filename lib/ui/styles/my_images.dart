@@ -19,10 +19,6 @@ class MyImages {
   static const String ic_img = "assets/images/img_home.png";
   static const String icDelete = "assets/images/ic_delete.png";
 
-  static const String imgPlan = "assets/images/img_plan.png";
-
-  //svg path
   static const String icRightArrow = "assets/icons/ic_right_icon.svg";
   static const String icStar = "assets/icons/ic_star.svg";
-  static const String icEdit = "assets/icons/ic_edit.svg";
 }

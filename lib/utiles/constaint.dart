@@ -23,18 +23,12 @@ class ApiUrls {
   static const String resendEmailVerificationOtp = apiBaseUrl + "resend-email-verification-otp";
   static const String updateUserData = apiBaseUrl + "v1/update-user-data";
   static const String verifyForgetPasswordOtp = apiBaseUrl + "verify-forget-password-otp";
-
-
 }
 
 logPrint(String logis) {
   log(logis);
 }
 
-// <<<<<<< DEVEN
-// LoginModel? loginAndRegistrationresponse;
-// =======
-// >>>>>>> master
 
 ModeRegister? loginAndRegistrationresponse;
 

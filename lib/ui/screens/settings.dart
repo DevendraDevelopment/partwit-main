@@ -10,6 +10,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -154,9 +155,11 @@ class _SettingsState extends State<Settings> {
             ),
             CustomButton('logout'.tr,
               50,
-              onPressed: () {
+              onPressed: () async{
                 try {
-                  //Get.toNamed(MyRouter.verificationScreen,);
+                  SharedPreferences preferences = await SharedPreferences.getInstance();
+                  await preferences.clear();
+                  Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
                 } on Exception catch (e) {
                   e.printError();
                 }

@@ -5,12 +5,14 @@ import 'package:part_wit/ui/screens/forgotpsw_screen.dart';
 import 'package:part_wit/ui/screens/home_screen.dart';
 import 'package:part_wit/ui/screens/location_screen.dart';
 import 'package:part_wit/ui/screens/login_screen.dart';
+import 'package:part_wit/ui/screens/privacypolicy.dart';
 import 'package:part_wit/ui/screens/profile_screen.dart';
 import 'package:part_wit/ui/screens/reset_new_password.dart';
 import 'package:part_wit/ui/screens/save_items_screen.dart';
 import 'package:part_wit/ui/screens/settings.dart';
 import 'package:part_wit/ui/screens/signup_screen.dart';
 import 'package:part_wit/ui/screens/splash_screen.dart';
+import 'package:part_wit/ui/screens/termscondition.dart';
 import 'package:part_wit/ui/screens/user_edit_profile.dart';
 import 'package:part_wit/ui/screens/verification_forgetpassword_screen.dart';
 import 'package:part_wit/ui/screens/verification_screen.dart';
@@ -35,6 +37,8 @@ class MyRouter {
   static var aboutPartWit = "/aboutPartWit";
   static var settings = "/settings";
   static var changePassword = "/changePassword";
+  static var privacypolicy = "/privacypolicy";
+  static var termscondition = "/termscondition";
 
   static var route = [
     GetPage(name: '/', page: () => SplashScreen()),
@@ -54,6 +58,8 @@ class MyRouter {
     GetPage(name: MyRouter.yourReview, page: () => const YourReview()),
     GetPage(name: MyRouter.aboutPartWit, page: () => const AboutPartWit()),
     GetPage(name: MyRouter.settings, page: () => const Settings()),
+    GetPage(name: MyRouter.privacypolicy, page: () => const Privacypolicy()),
+    GetPage(name: MyRouter.termscondition, page: () => const TermsCondition()),
     // GetPage(name: MyRouter.changePassword, page: () => const ChangePassword()),
 
   ];

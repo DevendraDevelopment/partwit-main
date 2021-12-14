@@ -29,8 +29,10 @@ Future<ModeRegister> createRegister(
     status = json.decode(response.body)['status'];
     if (status == true) {
      // Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());
-      SharedPreferences prefs1 = await SharedPreferences.getInstance();
-      prefs1.setString("id", json.decode(response.body)['user_info']['id'].toString());
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString("id", json.decode(response.body)['user_info']['id'].toString());
+      String user = jsonEncode(ModeRegister.fromJson(jsonDecode(response.body)));
+      pref.setString('user', user);
       return ModeRegister.fromJson(json.decode(response.body));
     } else {
       Helpers.createSnackBar(context, json.decode(response.body)['message'].toString());

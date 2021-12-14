@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UserProfile extends StatefulWidget {
@@ -19,11 +23,29 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  String? imgurl = "";
+  String? name = "";
+  String? email = "";
+
+  void getUser() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var user = ModeRegister.fromJson(jsonDecode(pref.getString('user')!));
+    setState(() {
+      name = user.userInfo!.name;
+      email = user.userInfo!.email!;
+      imgurl = user.userInfo!.profilePic!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery
-        .of(context)
-        .size;
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -31,27 +53,26 @@ class _UserProfileState extends State<UserProfile> {
             SizedBox(
               height: screenSize.height * 0.03,
             ),
-            const CircleAvatar(
+            imgurl != null
+                ? CircleAvatar(
+                radius: 60.0, backgroundImage: NetworkImage(imgurl!))
+                :  const CircleAvatar(
                 backgroundColor: Colors.grey,
                 radius: 60,
                 child: CircleAvatar(
                   radius: 60,
                   backgroundImage: AssetImage(MyImages
-                      .logo //Convert File type of image to asset image path),
+                      .ic_person //Convert File type of image to asset image path),
                   ),
                 )),
             SizedBox(
               height: screenSize.height * 0.02,
             ),
-            LightTextHead(
-              data: 'userName'.tr,
-            ),
+            LightTextHead(data: name==null?"":name!,),
             SizedBox(
               height: screenSize.height * 0.01,
             ),
-            LightTextSubHead(
-              data: 'userEmail'.tr,
-            ),
+            LightTextSubHead(data: email==null?"":email!,),
             SizedBox(
               height: screenSize.height * 0.01,
             ),
@@ -103,7 +124,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             InkWell(
               onTap: () {
@@ -121,7 +142,7 @@ class _UserProfileState extends State<UserProfile> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             LightTextSubHead(
-                              data: 'ItemsListed'.tr,
+                              data: 'Items Listed'.tr,
                             ),
                             SvgPicture.asset(
                               MyImages.icRightArrow,
@@ -132,7 +153,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             InkWell(
               onTap: () {
@@ -161,12 +182,12 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             InkWell(
               onTap: () {
                 Get.toNamed(MyRouter.yourReview);
-              },
+                },
               child: Container(
                   margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   child: ClipRRect(
@@ -190,7 +211,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             InkWell(
               onTap: () {
@@ -219,7 +240,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             InkWell(
               onTap: () {
@@ -248,7 +269,7 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ) // This trailing comma makes auto-formatting nicer for build methods.
-              ),
+                  ),
             ),
             Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -281,37 +302,35 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(MyRouter.planScreen);
-                            },
-                            child:Container(
-                                margin: const EdgeInsets.all(30),
-                                width: 100,
-                                height: 30,
-                                child: ClipRRect(
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                                  child: Container(
-                                    color: MyAppTheme.backgroundColor,
-                                    child: Center(
-                                      child: LightTextBody(
-                                        data: 'Update'.tr,
-                                      ),
+                          GestureDetector(child: Container(
+                              margin: const EdgeInsets.all(30),
+                              width: 100,
+                              height: 30,
+                              child: ClipRRect(
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                                child: Container(
+                                  color: MyAppTheme.backgroundColor,
+                                  child: Center(
+                                    child: LightTextBody(
+                                      data: 'Update'.tr,
                                     ),
                                   ),
-                                ) // This trailing comma makes auto-formatting nicer for build methods.
-                            ),
-                          ),
+                                ),
+                              ) // This trailing comma makes auto-formatting nicer for build methods.
+                          ), onTap: () {
+                            // Get.toNamed(MyRouter.homeScreen);
+                          },),
                         ],
                       ),
                     ),
                   ),
                 ) // This trailing comma makes auto-formatting nicer for build methods.
-            ),
+                ),
           ],
         ),
       ),
     );
   }
+
 }

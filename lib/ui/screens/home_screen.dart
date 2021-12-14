@@ -189,11 +189,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Image.asset(
-                                        MyImages.ic_img,
-                                        height: 140,
-                                        width: 160,
-                                        fit: BoxFit.fill,
+                                      Expanded(
+                                        child: Image.asset(
+                                          MyImages.ic_img,
+                                          height: 140,
+                                          width: 160,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                       Row(
                                         crossAxisAlignment:
@@ -267,7 +269,12 @@ class _HomeScreenState extends State<HomeScreen> {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.add, size: 22), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.chat, size: 20,), label: ''),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.chat,
+              size: 20,
+            ),
+            label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
       ],
     );

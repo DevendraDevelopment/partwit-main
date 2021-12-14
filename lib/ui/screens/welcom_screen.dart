@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/utiles/constant.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 
 class WelcomeScreen extends StatefulWidget{
@@ -46,7 +49,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: LightTextBody(data: Constant.LOREM,),
           ),
 
-
           SizedBox(
             height: screenSize.height * 0.05,
           ),
@@ -58,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Constant.CONTINUE,
                   54,
                   onPressed: () {
-                    print('click mefff');
+                    Get.toNamed(MyRouter.homeScreen);
                   },
                 ),
               ],

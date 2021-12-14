@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -5,6 +6,8 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:part_wit/model/ModelRegister.dart';
+import 'package:part_wit/repository/update_user_profile_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -13,8 +16,10 @@ import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
+import 'package:part_wit/utiles/Helpers.dart';
 import 'package:part_wit/utiles/constaint.dart';
 import 'package:part_wit/utiles/utility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -30,18 +35,28 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   String? imgurl;
+
+  // _startTime() async {
+  //   getUser();
+  // }
+  void getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var user = ModeRegister.fromJson(jsonDecode(pref.getString('user')!));
+    setState(() {
+      _usernameController.text = user.userInfo!.name;
+      _emailController.text = user.userInfo!.email!;
+      imgurl = user.userInfo!.profilePic!;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-      imgurl = loginAndRegistrationresponse!.userInfo!.profilePic;
-      print("image$loginAndRegistrationresponse!.userInfo!.profilePic");
-      _usernameController.text = loginAndRegistrationresponse!.userInfo!.name;
-      _emailController.text = loginAndRegistrationresponse!.userInfo!.email;
-
-    });
+    getUser();
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -116,11 +131,11 @@ class _EditProfileState extends State<EditProfile> {
                                   fontSize: 14),
                               enabled: true,
                               obscureText: false,
-                                controller: _usernameController,
+                              controller: _usernameController,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
-                                hintText: 'Enter your name'.tr,
+                                hintText: 'Enter Your Name'.tr,
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                       color: MyAppTheme.buttonShadow_Color),
@@ -159,7 +174,7 @@ class _EditProfileState extends State<EditProfile> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15, top: 5),
                               child: LightTextBody(
-                                data: 'Email'.tr,
+                                data: 'Email '.tr,
                               ),
                             ),
                             TextFormField(
@@ -173,22 +188,22 @@ class _EditProfileState extends State<EditProfile> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
-                                hintText: 'Enter your emial'.tr,
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: MyAppTheme.buttonShadow_Color),
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
+                                hintText: 'Enter Your Email'.tr,
+                                // focusedBorder: OutlineInputBorder(
+                                //   borderSide: const BorderSide(
+                                //       color: MyAppTheme.buttonShadow_Color),
+                                //   borderRadius: BorderRadius.circular(15.0),
+                                // ),
                                 enabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: MyAppTheme.buttonShadow_Color),
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(15.0))),
-                                border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: MyAppTheme.whiteColor,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(15.0)),
+                                // border: OutlineInputBorder(
+                                //     borderSide: const BorderSide(
+                                //         color: MyAppTheme.whiteColor,
+                                //         width: 2.0),
+                                //     borderRadius: BorderRadius.circular(15.0)),
                               ),
                             ),
                           ],
@@ -201,11 +216,37 @@ class _EditProfileState extends State<EditProfile> {
                   child: Column(
                     children: [
                       CustomButton(
-                        'save'.tr,
+                        'Save'.tr,
                         50,
                         onPressed: () {
                           try {
                             // Get.toNamed(MyRouter.welcomeScreen);
+                            // FocusScope.of(this.context).requestFocus(FocusNode());
+                            // createUserUpdateData(File(""), _usernameController.text, context);
+                            Helpers.verifyInternet().then((intenet) {
+                              if (intenet != null && intenet) {
+                                if (_imageFile == null) {
+                                  createUserUpdateData(File(""), _usernameController.text, context).then((response) {
+                                    setState(() {
+                                      // Get.toNamed(MyRouter.welcomeScreen);
+                                      // Navigator.pop(context);
+                                      Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+                                    });
+                                  });
+                                }  else {
+                                  createUserUpdateData(_imageFile!, _usernameController.text, context).then((response) {
+                                    setState(() {
+                                      // Get.toNamed(MyRouter.welcomeScreen);
+                                      // Navigator.pop(context);
+                                      Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+                                    });
+                                  });
+                                }
+                              } else {
+                                Helpers.createSnackBar(context,
+                                    "Please check your internet connection");
+                              }
+                            });
                           } on Exception catch (e) {
                             e.printError();
                           }
@@ -231,10 +272,12 @@ class _EditProfileState extends State<EditProfile> {
             onTap: () {
               OpenSheet();
             },
-            child:imgurl != null ?CircleAvatar(
-              radius: 60.0,
-              backgroundImage: NetworkImage(imgurl!)
-            ) : getImageWidget(),
+            child: _imageFile != null?
+            getImageWidget():
+            imgurl != null
+                ? CircleAvatar(
+                    radius: 60.0, backgroundImage: NetworkImage(imgurl!))
+                : getImageWidget(),
           )),
           Positioned(
             bottom: 8,
@@ -283,7 +326,8 @@ class _EditProfileState extends State<EditProfile> {
           radius: 60,
           child: CircleAvatar(
             radius: 60,
-            backgroundImage: AssetImage(MyImages.ic_person //Convert File type of image to asset image path),
+            backgroundImage: AssetImage(MyImages
+                    .ic_person //Convert File type of image to asset image path),
                 ),
           ));
     }

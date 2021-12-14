@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isPasswordFocus = false,
       _isEmailFocus = false,
       _isConfirmPasswordFocus = false,
-      _isAgreeCheckBox = false;
+      _isAgreeCheckBox = true;
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _confrimpasswordController =
@@ -111,7 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter email address';
-                      } /*else if (!isEmail(_emailController.text)) {
+                      }
+                      /*else if (!isEmail(_emailController.text)) {
                         return 'Please enter valid email address';
                       }*/
                       return null;
@@ -203,6 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: MyAppTheme.textPrimary,
                         fontWeight: FontWeight.normal,
                         fontSize: 14),
+                    controller: _confrimpasswordController,
                     obscureText: !this._showconfirmPassword,
                     focusNode: confrmPassWordFocus,
                     onTap: () {
@@ -215,7 +217,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter password';
+                        return 'Please enter Confirm password';
                       } else if (value.length < 5) {
                         return 'Password must be greater then 5';
                       }
@@ -247,7 +249,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? ImageIcon(AssetImage(MyImages.ic_eye_open))
                             : ImageIcon(AssetImage(MyImages.ic_eye_close)),
                         onPressed: () {
-                          setState(() => _showconfirmPassword = !_showconfirmPassword);
+                          setState(() =>
+                              _showconfirmPassword = !_showconfirmPassword);
                         },
                       ),
                     ),
@@ -261,7 +264,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Checkbox(
-                      activeColor: Colors.green,
+                      activeColor: Colors.yellow,
                       value: this._isAgreeCheckBox,
                       onChanged: (bool? value) {
                         setState(() {
@@ -272,15 +275,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     /*CustomCheckbox(
                       key: signupkey_formKey,
                     ),*/
-                    SizedBox(
-                      width: screenSize.height * 0.001,
-                    ),
+                    // SizedBox(
+                    //   width: screenSize.height * 0.001,
+                    // ),
                     const LightTextBody(data: Constant.AGREE),
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
-                    const LightTextBodyBlack(
-                      data: Constant.TERMS,
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(MyRouter.termscondition);
+                      },
+                      child: LightTextBodyBlack(
+                        data: Constant.TERMS,
+                      ),
                     ),
                     SizedBox(
                       width: screenSize.height * 0.001,
@@ -289,7 +297,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
-                    const LightTextBodyBlack(data: Constant.POLICY),
+                    Flexible(child: InkWell(
+                      onTap: () {
+                        Get.toNamed(MyRouter.privacypolicy);
+                      },
+                      child: LightTextBodyBlack(data: Constant.POLICY),
+                    )),
                   ],
                 ),
                 SizedBox(
@@ -304,10 +317,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         54,
                         onPressed: () {
                           if (!signupkey_formKey.currentState!.validate()) {
-
                           } else if (!_isAgreeCheckBox) {
-                            Helpers.createSnackBar(context,
-                                "Please accept Terms & Conditions");
+                            Helpers.createSnackBar(
+                                context, "Please accept Terms & Conditions");
                           } else {
                             _isConfirmPasswordFocus = false;
                             _isPasswordFocus = false;
@@ -316,30 +328,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 .requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet) {
-                                createRegister(_emailController.text,
-                                        _passwordController.text, context)
-                                    .then((response) {
-                                  setState(() {
-                                    model = response;
-                                    loginAndRegistrationresponse = response;
-                                    print(loginAndRegistrationresponse!.token);
-                                    Helpers.createSnackBar(context,
-                                        "Response :: "+model.toString());
-                                    if (model!.status) {
-                                      print("Response  " + model.toString());
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => VerificationScreen(_emailController.text,Constant.REGISTRATION_OTP)),
-                                      );
-                                     /* Map<String, String> map = {
+                                if (_passwordController.text ==
+                                    _confrimpasswordController.text) {
+                                  createRegister(_emailController.text,
+                                          _passwordController.text, context)
+                                      .then((response) {
+                                    setState(() {
+                                      model = response;
+                                      loginAndRegistrationresponse = response;
+                                      print(loginAndRegistrationresponse!.token);
+                                      if (model!.status) {
+                                        print("Response  " + model.toString());
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  VerificationScreen(
+                                                      _emailController.text,
+                                                      Constant
+                                                          .REGISTRATION_OTP)),
+                                        );
+                                        /* Map<String, String> map = {
                                         "email": _emailController.text,
                                         "type": Constant.REGISTRATION_OTP,
                                       };
                                       Get.toNamed(MyRouter.verificationScreen,
                                           parameters: map);*/
-                                    }
+                                      }
+                                    });
                                   });
-                                });
+                                } else {
+                                  Helpers.createSnackBar(
+                                      context, "Your Password Doesn't Match");
+                                }
                               } else {
                                 Helpers.createSnackBar(context,
                                     "Please check your internet connection");
@@ -389,7 +410,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       width: screenSize.height * 0.01,
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.toNamed(MyRouter.loginScreen);
                       },
                       child: LightTextBodyBlack(
@@ -397,6 +418,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     )
                   ],
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.03,
                 ),
               ],
             ),

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:part_wit/repository/update_user_profile_repository.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
@@ -13,6 +16,7 @@ import 'package:part_wit/utiles/constant.dart';
 import 'package:part_wit/utiles/my_app_theme.dart';
 import 'package:part_wit/utiles/my_images.dart';
 import 'package:part_wit/utiles/utility.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class CreateProfile extends StatefulWidget {
@@ -133,11 +137,9 @@ class _CreateProfileState extends State<CreateProfile> {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-                                createUserUpdateData(_imageFile!,
-                                        _nameController.text, context)
-                                    .then((response) {
+                                createUserUpdateData(_imageFile!, _nameController.text, context).then((response) {
                                   setState(() {
-
+                                    Get.toNamed(MyRouter.welcomeScreen);
                                   });
                                 });
                               } else {
@@ -147,10 +149,10 @@ class _CreateProfileState extends State<CreateProfile> {
                             });
                           }
 
-                          /* try {
+                           /*try {
                             Get.toNamed(MyRouter.welcomeScreen);
                           } on Exception catch (e) {
-                            e.printError();
+                            // e.printError();
                           }*/
                         },
                       ),
@@ -195,27 +197,41 @@ class _CreateProfileState extends State<CreateProfile> {
     );
   }
 
-  Future takePhoto(ImageSource source) async {
+  takePhoto(ImageSource source) async {
     try {} on Exception catch (_, e) {
       print('Failed to pic image $e');
     }
+    // checkPermission();
     final _imageFile = await _picker.pickImage(source: source);
     if (_imageFile == null) return;
 
     final imageTemporary = File(_imageFile.path);
     this._imageFile = imageTemporary;
+    try {
+      setState(() => this._imageFile = imageTemporary);
 
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      this._imageFile = imageTemporary;
+      Navigator.pop(context);
+    } catch (exception) {
+    }
+  }
+  void checkPermission() async {
+    await _handleLocationPermission(Permission.camera);
+    await _handleLocationPermission(Permission.photos);
+  }
 
-      // Your Code
-    });
-    // setState(() => this._imageFile = imageTemporary);
+  Future<void> _handleLocationPermission(Permission permission) async {
+    final status = await permission.request();
+    if(status.isGranted){
+      Helpers.createSnackBar(context, "Permission Accessed");
+      // Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
+    }else if(status.isDenied){
+      Helpers.createSnackBar(context, "Permission Denied");
+    }
+    print(status);
   }
 
   getImageWidget() {
     if (_imageFile != null) {
-      Navigator.pop(context);
       return CircleAvatar(
         backgroundColor: Colors.grey,
         radius: 60,

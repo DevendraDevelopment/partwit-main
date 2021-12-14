@@ -41,24 +41,27 @@ class _TermsConditionState extends State<TermsCondition> {
         ),
       ),
       body: SafeArea(
-        child: Center(
-              child: Container(
-                margin: EdgeInsets.only(top: 15.0,right: 15.0,left: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10,),
-                    const LightTextBodyBold(data: Constant.TERMS),
-                    SizedBox(height: 10,),
-                    const LightTextBody(data: Constant.PRIVACYPOLICY),
-                    SizedBox(height: 20,),
-                    const LightTextBody(data: Constant.PRIVACYPOLICY),
-                  ],
+        child: SingleChildScrollView(child: Center(
+          child: Container(
+            margin: EdgeInsets.only(top: 15.0,right: 15.0,left: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 10,),
+                const LightTextBodyBold(data: Constant.TERMS),
+                SizedBox(height: 10,),
+                const LightTextBody(data: Constant.PRIVACYPOLICY),
+                SizedBox(height: 20,),
+                const LightTextBody(data: Constant.PRIVACYPOLICY),
+                SizedBox(
+                  height: 20,
                 ),
-              )
-              ,
-        ),
+              ],
+            ),
+          )
+          ,
+        ),),
       ),
     );
   }

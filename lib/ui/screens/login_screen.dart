@@ -12,6 +12,7 @@ import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
+import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
 import 'package:part_wit/utiles/Helpers.dart';
@@ -36,7 +37,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final login_formKey = GlobalKey<FormState>();
-  bool _showPassword = false, _isEmailFocus = false, _isPasswordFocus = false;
+  bool _showPassword = false,
+      _isEmailFocus = false,
+      _isPasswordFocus = false;
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
@@ -106,7 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery
+        .of(context)
+        .size;
     return GestureDetector(
       onTap: () {
         ///hide keyboard function
@@ -171,9 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
+                          BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
+                          BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.whiteColor, width: 2.0),
@@ -201,10 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter password';
-                      }else if (value.length < 8) {
-                        return 'Password must be greater then 8';
-                      } else if (value.length > 20){
-                        return 'Password must be less then 20';
+                      } else if (value.length < 5) {
+                        return 'Password must be greater then 5';
                       }
                       return null;
                     },
@@ -220,9 +223,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
+                          BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
+                          BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
@@ -261,8 +264,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Constant.USER_LOGIN,
                         54,
                         onPressed: () {
-                          Get.toNamed(MyRouter.createProfile);
-                          /*if (login_formKey.currentState!.validate()) {
+                          // Get.toNamed(MyRouter.createProfile);
+                          if (login_formKey.currentState!.validate()) {
                             _isEmailFocus = false;
                             _isPasswordFocus = false;
                             FocusScope.of(this.context)
@@ -270,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
                                 createLogin(_emailController.text,
-                                        _passwordController.text, context)
+                                    _passwordController.text, context)
                                     .then((response) {
                                   setState(() {
                                     loginData(response);
@@ -281,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "Please check your internet connection");
                               }
                             });
-                          }*/
+                          }
                         },
                       ),
                     ],
@@ -310,14 +313,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
 
                         FacebookAuth.instance.login(
-                            permissions: ["public_profile", "email"]).then((value) {
-                          print("FB DATA :: "+value.toString()+"\n"+value.status.toString());
-                          print("FB DATA 1 :: "+value.accessToken.toString());
+                            permissions: ["public_profile", "email"]).then((
+                            value) {
+                          print("FB DATA :: " + value.toString() + "\n" +
+                              value.status.toString());
+                          print("FB DATA 1 :: " + value.accessToken.toString());
                           FacebookAuth.instance.getUserData().then((userData) {
                             setState(() {
                               // _isLoggedIn = true;
                               _userObj = userData;
-                              print("USER DATA :: "+_userObj.toString());
+                              print("USER DATA :: " + _userObj.toString());
                             });
                           });
                         });
@@ -332,8 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () {
                         _handleSignIn();
-                        print("EMAIL :: " + _currentUser!.email);
-                        Helpers.createSnackBar(context, "EMAIL :: " + _currentUser!.email);
+                        print("USER :: " + _currentUser!.email);
                       }, // handle your image tap here
                       child: Image.asset(
                         MyImages.ic_gplus,
@@ -351,31 +355,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: screenSize.height * 0.02,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const LightTextBody(data: Constant.DONT_HAVE),
-                    SizedBox(
-                      width: screenSize.height * 0.01,
-                    ),
-                    InkWell(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const LightTextBody(data: Constant.DONT_HAVE),
+                      SizedBox(
+                        width: screenSize.height * 0.01,
+                      ),
+                      InkWell(
                         onTap: () {
-                          try {
-                            Get.toNamed(MyRouter.signupScreen);
-                          } on Exception catch (e) {
-                            e.printError();
-                          }
+                          Get.toNamed(MyRouter.signupScreen);
                         },
-                        child: const LightTextSubHead(
+                        child: LightTextBodyBlack(
                           data: Constant.SIGNUP_HERE,
-                        ))
-                  ],
+                        ),
+                      )
+                    ]),
+                SizedBox(
+                  height: screenSize.height * 0.03,
                 ),
               ],
             ),
-          ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     const LightTextBody(data: Constant.DONT_HAVE),
+            //     SizedBox(
+            //       width: screenSize.height * 0.01,
+            //     ),
+            //     InkWell(
+            //         onTap: () {
+            //           try {
+            //             Get.toNamed(MyRouter.signupScreen);
+            //           } on Exception catch (e) {
+            //             e.printError();
+            //           }
+            //         },
+            //         child: const LightTextSubHead(
+            //           data: Constant.SIGNUP_HERE,
+            //         ))
+            //   ],
+            // ),
         ),
       ),
-    );
+    ),);
   }
 
   void loginData(ModeRegister response) {

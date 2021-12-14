@@ -50,7 +50,7 @@ class UserInfo {
   var emailVerifiedAt;
   var deviceId;
   var phone;
-  var profileImage;
+  // var profileImage;
   var bannerImage;
   var customerId;
   var isEmailVerified;
@@ -70,7 +70,7 @@ class UserInfo {
         this.emailVerifiedAt,
         this.deviceId,
         this.phone,
-        this.profileImage,
+        // this.profileImage,
         this.bannerImage,
         this.customerId,
         this.isEmailVerified,
@@ -91,7 +91,7 @@ class UserInfo {
     emailVerifiedAt = json['email_verified_at'];
     deviceId = json['device_id'];
     phone = json['phone'];
-    profileImage = json['profile_image'];
+    // profileImage = json['profile_image'];
     bannerImage = json['banner_image'];
     customerId = json['customer_id'];
     isEmailVerified = json['isEmailVerified'];
@@ -114,7 +114,7 @@ class UserInfo {
     data['email_verified_at'] = this.emailVerifiedAt;
     data['device_id'] = this.deviceId;
     data['phone'] = this.phone;
-    data['profile_image'] = this.profileImage;
+    // data['profile_image'] = this.profileImage;
     data['banner_image'] = this.bannerImage;
     data['customer_id'] = this.customerId;
     data['isEmailVerified'] = this.isEmailVerified;

@@ -4,8 +4,6 @@ class Constant {
   static const USER_ID = 'userID';
 
 
-
-
   static const USER_EMAIL = 'Email Address';
   static const USER_PASSWORD = 'Password';
   static const RE_ENTER_PASSWORD = 'Re-enter Password';
