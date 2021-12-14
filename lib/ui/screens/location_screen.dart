@@ -113,7 +113,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   Constant.WHILE_USING_APP,
                   54,
                     onPressed: (){
-                      print('click me2');
+                      checkPermission();
                     },
                 ),
                 SizedBox(
@@ -122,7 +122,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   CustomButton(
                   Constant.NEVER,
                   54,onPressed: (){
-                    print('click me3');
+                    checkDeniedPermission();
                   },
                 ),
               ],
@@ -142,6 +142,18 @@ class _LocationScreenState extends State<LocationScreen> {
     if(status.isGranted){
       Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
     }else if(status.isDenied){
+      Helpers.createSnackBar(context, "premission denied");
+
+    }
+    print(status);
+  }
+  void checkDeniedPermission() async {
+    await _handleDeniedCameraAndMic(Permission.location);
+
+  }
+  Future<void> _handleDeniedCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    if(status.isDenied){
       Helpers.createSnackBar(context, "premission denied");
 
     }
