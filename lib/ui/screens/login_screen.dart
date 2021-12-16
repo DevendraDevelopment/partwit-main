@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
-import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/user_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
@@ -14,19 +13,16 @@ import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constaint.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constaint.dart';
+import 'package:part_wit/utils/constant.dart';
+import 'package:part_wit/utils/utility.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'dart:async';
-import 'dart:convert' show json;
 
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import "package:http/http.dart" as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -36,13 +32,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final login_formKey = GlobalKey<FormState>();
+  final loginFormKey = GlobalKey<FormState>();
   bool _showPassword = false,
       _isEmailFocus = false,
       _isPasswordFocus = false;
 
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   FocusNode emailFocus = new FocusNode();
   FocusNode passWordFocus = new FocusNode();
 
@@ -121,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: MyAppTheme.backgroundColor,
         body: SingleChildScrollView(
           child: Form(
-            key: login_formKey,
+            key: loginFormKey,
             child: Column(
               children: [
                 SizedBox(
@@ -265,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         54,
                         onPressed: () {
                           // Get.toNamed(MyRouter.createProfile);
-                          if (login_formKey.currentState!.validate()) {
+                          if (loginFormKey.currentState!.validate()) {
                             _isEmailFocus = false;
                             _isPasswordFocus = false;
                             FocusScope.of(this.context)

@@ -4,4 +4,7 @@ class Fonts {
   static const String biotifNormal = "Biotif SemiBold";
   static const String biotifSemiBold = "Biotif Regular";
 
+
+  static const String futurBold = "FuturPTBold";
+
 }

@@ -7,9 +7,8 @@ import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/light_text_body_bold.dart';
-import 'package:part_wit/utiles/light_text_body_white.dart';
+import 'package:part_wit/utils/light_text_body_bold.dart';
+import 'package:part_wit/utils/light_text_body_white.dart';
 
 class SaveItems extends StatelessWidget {
   const SaveItems({Key? key}) : super(key: key);
@@ -29,12 +28,9 @@ class SaveItems extends StatelessWidget {
           child: Image.asset(MyImages.ic_app_logo),
         ),
         leading: Builder(
-          builder: (context) => // Ensure Scaffold is in context
-              // ignore: deprecated_member_use
-              FlatButton(
-                  padding: const EdgeInsets.all(0.0),
-                  child: const Icon(Icons.arrow_back),
-                  onPressed: () => {Get.back()}),
+          builder: (context) => IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => {Get.back()}),
         ),
       ),
       body: Column(
@@ -65,32 +61,38 @@ class SaveItems extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.asset(
-                                MyImages.logo,
+                                MyImages.ic_img,
                                 fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
                               ),
                             ),
                           ),
-                          Padding(
+                          Flexible(
+                              child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         LightTextBodyBold(
                                           data: 'itemName'.tr,
                                         ),
                                         const LightTextBody(
-                                          data: "Test",//Constant.DATE,
+                                          data: "12/02/2021", //Constant.DATE,
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      width: screenSize.width * 0.33,
-                                    ),
                                     const LightTextBodyBold(
-                                      data: "Test",//Constant.DOLLAR,
+                                      data: "\$1000", //Constant.DOLLAR,
                                     ),
                                   ],
                                 ),
@@ -119,14 +121,20 @@ class SaveItems extends StatelessWidget {
                                     SizedBox(
                                       width: screenSize.width * 0.20,
                                     ),
-                                    InkWell(
-                                        onTap: () {},
-                                        child: Image.asset(MyImages.icDelete)),
+                                    Flexible(
+                                      child: InkWell(
+                                          onTap: () {},
+                                          child:
+                                              Image.asset(MyImages.icDelete)),
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
-                          )
+                          )),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ],
                       ),
                     ),

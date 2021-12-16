@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:part_wit/ui/styles/fonts.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
-import 'package:part_wit/utiles/CircularLoadingWidget.dart';
+import 'package:part_wit/utils/CircularLoadingWidget.dart';
 import 'package:connectivity/connectivity.dart';
 
 class Helpers {

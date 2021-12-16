@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -11,11 +9,9 @@ import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constant.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constant.dart';
 import 'package:permission_handler/permission_handler.dart';
-//import 'package:location_permissions/location_permissions.dart';
-
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({Key? key}) : super(key: key);
@@ -25,20 +21,13 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  final _unqKey = UniqueKey();
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     super.dispose();
   }
- /* _checkPermission() async {
-    PermissionStatus permission = await LocationPermissions().requestPermissions();
-    ServiceStatus serviceStatus = await LocationPermissions().checkServiceStatus();
-    if (serviceStatus == ServiceStatus.disabled) {
-      bool isOpened = await LocationPermissions().openAppSettings();
-    }
-  }*/
+
   @override
   initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -64,7 +53,6 @@ class _LocationScreenState extends State<LocationScreen> {
           SizedBox(
             height: screenSize.height * 0.05,
           ),
-
           Center(
             child: Image.asset(MyImages.ic_location),
           ),
@@ -93,36 +81,38 @@ class _LocationScreenState extends State<LocationScreen> {
             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
             child: Column(
               children: [
-                  CustomButton(
+                CustomButton(
                   Constant.ALWAYS,
                   54,
-                   onPressed: (){
-                     try {
-                       checkPermission();
+                  onPressed: () {
+                    try {
+                      checkPermission();
                       // Get.toNamed(MyRouter.loginScreen);
 
-                     } on Exception catch (e) {
-                       e.printError();
-                     }
+                    } on Exception catch (e) {
+                      e.printError();
+                    }
                   },
                 ),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                  CustomButton(
+                CustomButton(
                   Constant.WHILE_USING_APP,
                   54,
-                    onPressed: (){
-                      checkPermission();
-                    },
+                  onPressed: () {
+                    checkPermission();
+                  },
                 ),
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                  CustomButton(
+                CustomButton(
                   Constant.NEVER,
-                  54,onPressed: (){
-                    checkDeniedPermission();
+                  54,
+                  onPressed: () {
+                    Get.toNamed(MyRouter.loginScreen);
+                    // checkDeniedPermission();
                   },
                 ),
               ],
@@ -135,17 +125,15 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void checkPermission() async {
     await _handleLocationPermission(Permission.location);
-
   }
 
   Future<void> _handleLocationPermission(Permission permission) async {
     final status = await permission.request();
-    if(status.isGranted){
-      Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
-    }else if(status.isDenied){
+    if (status.isGranted) {
+      Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
+    } else if (status.isDenied) {
       Helpers.createSnackBar(context, "Permission Denied");
     }
-    print(status);
   }
 
   void checkDeniedPermission() async {
@@ -154,9 +142,8 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<void> _handleDeniedPermission(Permission permission) async {
     final status = await permission.request();
-    if(status.isDenied){
+    if (status.isDenied) {
       Helpers.createSnackBar(context, "Permission Denied");
     }
-    print(status);
   }
 }

@@ -4,8 +4,8 @@ import '../api_base_helper/app_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import "../utiles/constant.dart";
-import "../utiles/utility.dart";
+import "../utils/constant.dart";
+import "../utils/utility.dart";
 import 'package:http_parser/http_parser.dart';
 
 import 'package:dio/dio.dart';

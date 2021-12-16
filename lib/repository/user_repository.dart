@@ -8,8 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constaint.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constaint.dart';
 
 import '../repository/user_repository.dart' as userRepo;
 import 'package:http_parser/http_parser.dart';

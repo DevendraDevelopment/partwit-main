@@ -37,12 +37,9 @@ class _SettingsState extends State<Settings> {
           child: Image.asset(MyImages.ic_app_logo),
         ),
         leading: Builder(
-          builder: (context) => // Ensure Scaffold is in context
-              // ignore: deprecated_member_use
-              FlatButton(
-                  padding: const EdgeInsets.all(0.0),
-                  child: const Icon(Icons.arrow_back),
-                  onPressed: () => {Get.back()}),
+          builder: (context) => IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => {Get.back()}),
         ),
       ),
       body: Padding(
@@ -54,7 +51,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
               child: LightTextSubHead(
-                data: 'settings'.tr,
+                data: 'Settings'.tr,
               ),
             ),
             Padding(
@@ -72,7 +69,7 @@ class _SettingsState extends State<Settings> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           LightTextBody(
-                            data: 'notifications'.tr,
+                            data: 'Notifications'.tr,
                           ),
                           CupertinoSwitch(
                             activeColor: MyAppTheme.buttonColor,
@@ -90,10 +87,15 @@ class _SettingsState extends State<Settings> {
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                       child: Divider(color: MyAppTheme.border_Color),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-                      child: LightTextBody(
-                        data: 'changePsw'.tr,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(MyRouter.changePassword);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+                        child: LightTextBody(
+                          data: 'Change Password'.tr,
+                        ),
                       ),
                     ),
                     const Padding(
@@ -101,19 +103,19 @@ class _SettingsState extends State<Settings> {
                       child: Divider(color: MyAppTheme.border_Color),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
+                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           LightTextBody(
-                            data: 'language'.tr,
+                            data: 'Language'.tr,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               LightTextBody(
-                                data: 'lang_en'.tr,
+                                data: 'English'.tr,
                               ),
                               const Icon(Icons.arrow_drop_down_outlined)
                             ],
@@ -125,20 +127,30 @@ class _SettingsState extends State<Settings> {
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                       child: Divider(color: MyAppTheme.border_Color),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
-                      child: LightTextBody(
-                        data: 'privacyPolicy'.tr,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(MyRouter.privacypolicy);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+                        child: LightTextBody(
+                          data: 'Privacy Policy'.tr,
+                        ),
                       ),
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                       child: Divider(color: MyAppTheme.border_Color),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
-                      child: LightTextBody(
-                        data: 'terms'.tr,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(MyRouter.termscondition);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
+                        child: LightTextBody(
+                          data: 'Terms & Condition'.tr,
+                        ),
                       ),
                     ),
                   ],
@@ -153,11 +165,13 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: screenSize.height * 0.10,
             ),
-            CustomButton('logout'.tr,
+            CustomButton(
+              'logout'.tr,
               50,
-              onPressed: () async{
+              onPressed: () async {
                 try {
-                  SharedPreferences preferences = await SharedPreferences.getInstance();
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
                   await preferences.clear();
                   Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
                 } on Exception catch (e) {

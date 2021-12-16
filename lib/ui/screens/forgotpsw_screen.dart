@@ -3,20 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
-import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/repository/forgot_password_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
-import 'package:part_wit/ui/screens/verification_forgetpassword_screen.dart';
-import 'package:part_wit/ui/screens/verification_screen.dart';
+import 'package:part_wit/ui/screens/verification_forget_password_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constant.dart';
+import 'package:part_wit/utils/utility.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -26,10 +24,9 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final forgot_Key = GlobalKey<FormState>();
-  TextEditingController _emailController = new TextEditingController();
-  FocusNode emailFocus = new FocusNode();
-  bool _isEmailFocus = false;
+  final forgotKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  FocusNode emailFocus = FocusNode();
 
   @override
   void dispose() {
@@ -59,7 +56,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: MyAppTheme.backgroundColor,
         body: SingleChildScrollView(
           child: Form(
-            key: forgot_Key,
+            key: forgotKey,
             child: Column(
               children: [
                 SizedBox(
@@ -94,7 +91,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     controller: _emailController,
                     onTap: () {
                       setState(() {
-                        _isEmailFocus = true;
                       });
                     },
                     validator: (value) {
@@ -141,11 +137,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         Constant.SUBMIT,
                         54,
                         onPressed: () {
-                          if (forgot_Key.currentState!.validate()) {
-                            _isEmailFocus = false;
+                          if (forgotKey.currentState!.validate()) {
                             FocusScope.of(this.context).requestFocus(FocusNode());
-                            Helpers.verifyInternet().then((intenet) {
-                              if (intenet != null && intenet) {
+                            Helpers.verifyInternet().then((internet) {
+                              if (internet) {
                                 createForgotPassword(_emailController.text,context)
                                     .then((response) {
                                   setState(() {
@@ -191,7 +186,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       onTap: (){
                         Get.toNamed(MyRouter.signupScreen);
                       },
-                      child:  LightTextBodyBlack(
+                      child:  const LightTextBodyBlack(
                         data: Constant.SIGNUP_HERE,
                       ),
                     )
@@ -210,7 +205,7 @@ bool isEmail(String em) {
   String p =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-  RegExp regExp = new RegExp(p);
+  RegExp regExp = RegExp(p);
 
   return regExp.hasMatch(em);
 }

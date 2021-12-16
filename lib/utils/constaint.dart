@@ -1,11 +1,8 @@
-// It is used for ROUTE navigation
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 
 class ApiUrls {
@@ -23,16 +20,16 @@ class ApiUrls {
   static const String resendEmailVerificationOtp = apiBaseUrl + "resend-email-verification-otp";
   static const String updateUserData = apiBaseUrl + "v1/update-user-data";
   static const String verifyForgetPasswordOtp = apiBaseUrl + "verify-forget-password-otp";
+  static const String verifyChangePassword= apiBaseUrl + "v1/change-password";
 }
 
 logPrint(String logis) {
   log(logis);
 }
 
-
 ModeRegister? loginAndRegistrationresponse;
 
-messagetoastfalse(BuildContext context, String msg) {
+messageToastFalse(BuildContext context, String msg) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_LONG,
@@ -43,7 +40,7 @@ messagetoastfalse(BuildContext context, String msg) {
       fontSize: 12.0);
 }
 
-messagetoasttrue(BuildContext context, String msg) {
+messageToastTrue(BuildContext context, String msg) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_LONG,

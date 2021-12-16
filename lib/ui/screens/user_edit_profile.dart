@@ -14,11 +14,9 @@ import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constaint.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/utility.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
@@ -32,20 +30,17 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
-  TextEditingController _usernameController = new TextEditingController();
-  TextEditingController _emailController = new TextEditingController();
-  String? imgurl;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  String? imgUrl;
 
-  // _startTime() async {
-  //   getUser();
-  // }
   void getUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = ModeRegister.fromJson(jsonDecode(pref.getString('user')!));
     setState(() {
       _usernameController.text = user.userInfo!.name;
       _emailController.text = user.userInfo!.email!;
-      imgurl = user.userInfo!.profilePic!;
+      imgUrl = user.userInfo!.profilePic!;
     });
   }
 
@@ -77,9 +72,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Row(
                   children: [
-                    FlatButton(
-                        padding: const EdgeInsets.all(0.0),
-                        child: const Icon(
+                    IconButton(icon: const Icon(
                           Icons.arrow_back,
                           size: 35,
                         ),
@@ -220,24 +213,17 @@ class _EditProfileState extends State<EditProfile> {
                         50,
                         onPressed: () {
                           try {
-                            // Get.toNamed(MyRouter.welcomeScreen);
-                            // FocusScope.of(this.context).requestFocus(FocusNode());
-                            // createUserUpdateData(File(""), _usernameController.text, context);
-                            Helpers.verifyInternet().then((intenet) {
-                              if (intenet != null && intenet) {
+                            Helpers.verifyInternet().then((internet) {
+                              if (internet) {
                                 if (_imageFile == null) {
                                   createUserUpdateData(File(""), _usernameController.text, context).then((response) {
                                     setState(() {
-                                      // Get.toNamed(MyRouter.welcomeScreen);
-                                      // Navigator.pop(context);
                                       Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
                                     });
                                   });
                                 }  else {
                                   createUserUpdateData(_imageFile!, _usernameController.text, context).then((response) {
                                     setState(() {
-                                      // Get.toNamed(MyRouter.welcomeScreen);
-                                      // Navigator.pop(context);
                                       Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
                                     });
                                   });
@@ -270,13 +256,13 @@ class _EditProfileState extends State<EditProfile> {
           Positioned(
               child: InkWell(
             onTap: () {
-              OpenSheet();
+              openSheet();
             },
             child: _imageFile != null?
             getImageWidget():
-            imgurl != null
+            imgUrl != null
                 ? CircleAvatar(
-                    radius: 60.0, backgroundImage: NetworkImage(imgurl!))
+                    radius: 60.0, backgroundImage: NetworkImage(imgUrl!))
                 : getImageWidget(),
           )),
           Positioned(
@@ -284,7 +270,7 @@ class _EditProfileState extends State<EditProfile> {
             right: 5,
             child: InkWell(
               onTap: () {
-                OpenSheet();
+                openSheet();
               },
               child: const Icon(
                 Icons.add_circle_outline,
@@ -299,8 +285,8 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future takePhoto(ImageSource source) async {
-    try {} on Exception catch (_, e) {
-      print('Failed to pic image $e');
+    try {} on Exception catch (_) {
+      // print('Failed to pic image $e');
     }
     final _imageFile = await _picker.pickImage(source: source);
     if (_imageFile == null) return;
@@ -333,7 +319,7 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  void OpenSheet() {
+  void openSheet() {
     showModalBottomSheet(
       context: context,
       builder: ((builder) => bottomSheet(context)),

@@ -6,7 +6,7 @@ import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/constant.dart';
+import 'package:part_wit/utils/constant.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 
@@ -18,7 +18,7 @@ class WelcomeScreen extends StatefulWidget{
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  final wlcm_formKey = GlobalKey<FormState>();
+  final welcomeFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;

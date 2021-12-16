@@ -18,7 +18,18 @@ class MyImages {
   static const String ic_person = "assets/images/ic_person.png";
   static const String ic_img = "assets/images/img_home.png";
   static const String icDelete = "assets/images/ic_delete.png";
+  static const String icDropDown = "assets/images/ic_dropdown.png";
+  static const String imgPlan = "assets/images/img_plan.png";
+  static const String imgWhiteButton = "assets/images/img_whitebutton.png";
 
+  //svg path
   static const String icRightArrow = "assets/icons/ic_right_icon.svg";
   static const String icStar = "assets/icons/ic_star.svg";
+  static const String icEdit = "assets/icons/ic_edit.svg";
+  static const String icEyes = "assets/icons/ic_eyes.svg";
+  static const String icEditBtn = "assets/icons/ic_edit_btn.svg";
+  static const String icDeleteBtn = "assets/icons/ic_delete.svg";
+  static const String icShare = "assets/icons/ic_share.svg";
+  static const String icFlag = "assets/icons/ic_flag.svg";
+  static const String icClose = "assets/icons/ic_close.svg";
 }

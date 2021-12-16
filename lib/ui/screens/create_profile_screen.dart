@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:part_wit/repository/update_user_profile_repository.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -11,11 +10,11 @@ import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/my_app_theme.dart';
-import 'package:part_wit/utiles/my_images.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constant.dart';
+import 'package:part_wit/utils/my_app_theme.dart';
+import 'package:part_wit/utils/my_images.dart';
+import 'package:part_wit/utils/utility.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -27,10 +26,10 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
-  final profile_formKey = GlobalKey<FormState>();
-  bool _isNameFocus = false;
-  TextEditingController _nameController = new TextEditingController();
-  FocusNode nameFocus = new FocusNode();
+  final profileFormKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  FocusNode nameFocus = FocusNode();
+
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
@@ -39,14 +38,13 @@ class _CreateProfileState extends State<CreateProfile> {
     final screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        ///hide keyboard function
         Utility.hideKeyboard(context);
       },
       child: Scaffold(
         backgroundColor: MyAppTheme.backgroundColor,
         body: SingleChildScrollView(
           child: Form(
-            key: profile_formKey,
+            key: profileFormKey,
             child: Column(
               children: [
                 SizedBox(
@@ -87,7 +85,6 @@ class _CreateProfileState extends State<CreateProfile> {
                     controller: _nameController,
                     onTap: () {
                       setState(() {
-                        _isNameFocus = true;
                       });
                     },
                     validator: (value) {
@@ -132,11 +129,10 @@ class _CreateProfileState extends State<CreateProfile> {
                         Constant.CONTINUE,
                         54,
                         onPressed: () {
-                          if (profile_formKey.currentState!.validate()) {
-                            _isNameFocus = false;
+                          if (profileFormKey.currentState!.validate()) {
                             FocusScope.of(this.context).requestFocus(FocusNode());
-                            Helpers.verifyInternet().then((intenet) {
-                              if (intenet != null && intenet) {
+                            Helpers.verifyInternet().then((internet) {
+                              if (internet) {
                                 createUserUpdateData(_imageFile!, _nameController.text, context).then((response) {
                                   setState(() {
                                     Get.toNamed(MyRouter.welcomeScreen);
@@ -148,12 +144,6 @@ class _CreateProfileState extends State<CreateProfile> {
                               }
                             });
                           }
-
-                           /*try {
-                            Get.toNamed(MyRouter.welcomeScreen);
-                          } on Exception catch (e) {
-                            // e.printError();
-                          }*/
                         },
                       ),
                     ],
@@ -174,7 +164,7 @@ class _CreateProfileState extends State<CreateProfile> {
           Positioned(
               child: InkWell(
             onTap: () {
-              OpenSheet();
+              openSheet();
             },
             child: getImageWidget(),
           )),
@@ -183,7 +173,7 @@ class _CreateProfileState extends State<CreateProfile> {
             right: 5,
             child: InkWell(
               onTap: () {
-                OpenSheet();
+                openSheet();
               },
               child: const Icon(
                 Icons.add_circle_outline,
@@ -198,10 +188,9 @@ class _CreateProfileState extends State<CreateProfile> {
   }
 
   takePhoto(ImageSource source) async {
-    try {} on Exception catch (_, e) {
-      print('Failed to pic image $e');
+    try {} on Exception catch (_) {
+      // print('Failed to pic image $e');
     }
-    // checkPermission();
     final _imageFile = await _picker.pickImage(source: source);
     if (_imageFile == null) return;
 
@@ -211,8 +200,7 @@ class _CreateProfileState extends State<CreateProfile> {
       setState(() => this._imageFile = imageTemporary);
 
       Navigator.pop(context);
-    } catch (exception) {
-    }
+    }  on Exception catch (_) { }
   }
   void checkPermission() async {
     await _handleLocationPermission(Permission.camera);
@@ -227,7 +215,6 @@ class _CreateProfileState extends State<CreateProfile> {
     }else if(status.isDenied){
       Helpers.createSnackBar(context, "Permission Denied");
     }
-    print(status);
   }
 
   getImageWidget() {
@@ -253,7 +240,7 @@ class _CreateProfileState extends State<CreateProfile> {
     }
   }
 
-  void OpenSheet() {
+  void openSheet() {
     showModalBottomSheet(
       context: context,
       builder: ((builder) => bottomSheet(context)),

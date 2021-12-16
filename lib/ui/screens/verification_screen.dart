@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/repository/resend_otp_repository.dart';
 import 'package:part_wit/repository/verify_user_email_otp.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
@@ -11,18 +10,20 @@ import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constant.dart';
+import 'package:part_wit/utils/utility.dart';
 
 import 'package:pinput/pin_put/pin_put.dart';
 
 class VerificationScreen extends StatefulWidget {
   String otptyp, email;
-   VerificationScreen(String this.email,String this.otptyp) : super();
+
+  VerificationScreen(String this.email, String this.otptyp) : super();
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState(email,otptyp);
+  State<VerificationScreen> createState() =>
+      _VerificationScreenState(email, otptyp);
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
@@ -30,8 +31,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
   String otptyp, email;
- bool _isAgreeCheckBox = true;
-  _VerificationScreenState(String this.email,String this.otptyp);
+  bool _isAgreeCheckBox = true;
+
+  _VerificationScreenState(String this.email, String this.otptyp);
 
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -44,17 +46,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final screenHeight = MediaQuery.of(context).size.height;
+    // final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-   // String email = verificationtype[""];
-    //String type = verificationtype[""];
     final Object? rcvdData = ModalRoute.of(context)!.settings.arguments;
-
-    print("rcvd fdata ${rcvdData}");
 
     return GestureDetector(
       onTap: () {
-        ///hide keyboard function
         Utility.hideKeyboard(context);
       },
       child: Scaffold(
@@ -85,8 +82,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(
                   height: screenSize.height * 0.01,
                 ),
-                 LightTextBody(
-                  data: Constant.SEND_VERIFICATION+email,
+                LightTextBody(
+                  data: Constant.SEND_VERIFICATION + email,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(
@@ -107,10 +104,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           controller: _pinPutController,
                           cursorColor: MyAppTheme.whiteColor,
                           textStyle: const TextStyle(
-                            fontSize: 14,
-                            color: MyAppTheme.textPrimary,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 14,
+                              color: MyAppTheme.textPrimary,
+                              fontWeight: FontWeight.bold),
                           submittedFieldDecoration: _pinPutDecoration.copyWith(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -146,7 +142,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             width: screenSize.height * 0.001,
                           ),
                           const LightTextBody(data: Constant.DONT),
-
                         ],
                       ),
                     ],
@@ -164,26 +159,27 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         54,
                         onPressed: () {
                           if (verification_formKey.currentState!.validate()) {
-                            FocusScope.of(this.context).requestFocus(FocusNode());
+                            FocusScope.of(this.context)
+                                .requestFocus(FocusNode());
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
-                                createVerifyUserEmailOtp(_pinPutController.text,context)
+                                createVerifyUserEmailOtp(
+                                        _pinPutController.text, context)
                                     .then((response) {
                                   setState(() {
-                                    if(response.status==true){
+                                    if (response.status == true) {
                                       Get.toNamed(MyRouter.createProfile);
-                                    }else{
-                                    //  Get.toNamed(MyRouter.createProfile);
+                                    } else {
+                                      //  Get.toNamed(MyRouter.createProfile);
                                     }
                                   });
                                 });
                               } else {
-                                Helpers.createSnackBar(context, "Please check your internet connection");
+                                Helpers.createSnackBar(context,
+                                    "Please check your internet connection");
                               }
                             });
-
                           }
-
                         },
                       ),
                     ],
@@ -209,26 +205,26 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   InkWell ResendOtpButton() {
     return InkWell(
-                onTap: (){
-                  Helpers.verifyInternet().then((intenet) {
-                    if (intenet != null && intenet) {
-                      createResendOtp(otptyp,email,context)
-                          .then((response) {
-                        setState(() {
-                          if(response.status==true){
-                           // Get.toNamed(MyRouter.createProfile,
-                             //   arguments: Constant.PASS_VALUE);
-                          }
-                        });
-                      });
-                    } else {
-                      Helpers.createSnackBar(context, "Please check your internet connection");
-                    }
-                  });
-                },
-                child: LightTextBodyBlack(
-                  data: Constant.RESEND_CODE,
-                ),
-              );
+      onTap: () {
+        Helpers.verifyInternet().then((intenet) {
+          if (intenet != null && intenet) {
+            createResendOtp(otptyp, email, context).then((response) {
+              setState(() {
+                if (response.status == true) {
+                  // Get.toNamed(MyRouter.createProfile,
+                  //   arguments: Constant.PASS_VALUE);
+                }
+              });
+            });
+          } else {
+            Helpers.createSnackBar(
+                context, "Please check your internet connection");
+          }
+        });
+      },
+      child: LightTextBodyBlack(
+        data: Constant.RESEND_CODE,
+      ),
+    );
   }
 }

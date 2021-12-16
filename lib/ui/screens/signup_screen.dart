@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
-import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/user_sign_up_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
@@ -11,14 +9,13 @@ import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:part_wit/ui/widgets/custom_checkbox.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
-import 'package:part_wit/utiles/Helpers.dart';
-import 'package:part_wit/utiles/constaint.dart';
-import 'package:part_wit/utiles/constant.dart';
-import 'package:part_wit/utiles/utility.dart';
+import 'package:part_wit/utils/Helpers.dart';
+import 'package:part_wit/utils/constaint.dart';
+import 'package:part_wit/utils/constant.dart';
+import 'package:part_wit/utils/utility.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);

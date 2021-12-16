@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
-import 'package:part_wit/utiles/constant.dart';
+import 'package:part_wit/utils/constant.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:part_wit/utiles/light_text_body_bold.dart';
+import 'package:part_wit/utils/light_text_body_bold.dart';
 
 class Privacypolicy extends StatefulWidget {
   const Privacypolicy({Key? key}) : super(key: key);
@@ -30,15 +29,13 @@ class _PrivacypolicyState extends State<Privacypolicy> {
             child: Image.asset(MyImages.ic_app_logo),
           ),
           leading: Builder(
-            builder: (context) => // Ensure Scaffold is in context
-                // ignore: deprecated_member_use
-                FlatButton(
-                    padding: const EdgeInsets.all(0.0),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 35,
-                    ),
-                    onPressed: () => {Get.back()}),
+            builder: (context) => FlatButton(
+                padding: const EdgeInsets.all(0.0),
+                child: const Icon(
+                  Icons.arrow_back,
+                  size: 35,
+                ),
+                onPressed: () => {Get.back()}),
           ),
         ),
         body: SafeArea(

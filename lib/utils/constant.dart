@@ -9,7 +9,13 @@ class Constant {
   static const RE_ENTER_PASSWORD = 'Re-enter Password';
   static const FACE_ID = 'Use Face ID';
   static const FORGOT_PASSWORD = 'Forgot Password?';
+  static const CHANGEPASSWORD = 'Change Password';
+  static const USER_OLDPASSWORD = 'Old Password';
   static const USER_LOGIN = 'Login';
+  static const UPDATE = 'Update';
+
+
+  static const TEXT_DEMO = 'Lorem Ipsum';
 
 
  static const LOCATION_TEXT='Location';

@@ -21,6 +21,12 @@ class MyAppTheme {
 
   static const items_bg_Color = Color(0xFFF5F5F5);
   static const plan_bg_Color = Color(0xFFFF5F5F5);
+  static const textfield_bg_grayColor = Color(0xFFF2F2EF);
+  static const txtShadow_Color = Color(0xFFf2f3ee);
+
+  //plan box colors
+  static const box_bg_grayColor = Color(0xFFD5D5D5);
+  static const greenColor = Color(0xFF00A81A);
 
   static final ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: backgroundColor,

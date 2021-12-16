@@ -23,7 +23,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  String? imgurl = "";
+  String? imgUrl = "";
   String? name = "";
   String? email = "";
 
@@ -33,7 +33,7 @@ class _UserProfileState extends State<UserProfile> {
     setState(() {
       name = user.userInfo!.name;
       email = user.userInfo!.email!;
-      imgurl = user.userInfo!.profilePic!;
+      imgUrl = user.userInfo!.profilePic!;
     });
   }
 
@@ -53,9 +53,9 @@ class _UserProfileState extends State<UserProfile> {
             SizedBox(
               height: screenSize.height * 0.03,
             ),
-            imgurl != null
+            imgUrl != null
                 ? CircleAvatar(
-                radius: 60.0, backgroundImage: NetworkImage(imgurl!))
+                radius: 60.0, backgroundImage: NetworkImage(imgUrl!))
                 :  const CircleAvatar(
                 backgroundColor: Colors.grey,
                 radius: 60,
@@ -128,7 +128,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             InkWell(
               onTap: () {
-                // Get.toNamed(MyRouter.saveItems);
+                Get.toNamed(MyRouter.itemsListedForSale);
               },
               child: Container(
                   margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -319,7 +319,7 @@ class _UserProfileState extends State<UserProfile> {
                                 ),
                               ) // This trailing comma makes auto-formatting nicer for build methods.
                           ), onTap: () {
-                            // Get.toNamed(MyRouter.homeScreen);
+                            Get.toNamed(MyRouter.planScreen);
                           },),
                         ],
                       ),

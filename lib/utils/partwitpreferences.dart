@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:part_wit/model/LoginModel.dart';
 import 'package:part_wit/model/ModelRegister.dart';
-import 'package:part_wit/utiles/constaint.dart';
+import 'package:part_wit/utils/constaint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

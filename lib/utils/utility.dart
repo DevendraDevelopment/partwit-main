@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
+
+import 'my_images.dart';
 
 
 
@@ -44,5 +47,28 @@ class Utility {
         statusBarColor: backgroundColor,
         //or set color with: Color(0xFF0000FF)
         statusBarIconBrightness: Brightness.light));
+  }
+
+  //actionbar
+  static actionBar(){
+    return AppBar(
+      backgroundColor: MyAppTheme.backgroundColor,
+      brightness: Brightness.dark,
+      centerTitle: true,
+      title: Container(
+        height: 50,
+        width: 50,
+        alignment: Alignment.center,
+        child: Image.asset(MyImages.ic_app_logo),
+      ),
+      leading: Builder(
+        builder: (context) => // Ensure Scaffold is in context
+        // ignore: deprecated_member_use
+        FlatButton(
+            padding: const EdgeInsets.all(0.0),
+            child: const Icon(Icons.arrow_back),
+            onPressed: () => {Get.back()}),
+      ),
+    );
   }
 }
