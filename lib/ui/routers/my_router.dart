@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:part_wit/ui/screens/about_partwit.dart';
+import 'package:part_wit/ui/screens/change_password.dart';
 import 'package:part_wit/ui/screens/create_profile_screen.dart';
 import 'package:part_wit/ui/screens/forgotpsw_screen.dart';
 import 'package:part_wit/ui/screens/home_screen.dart';
@@ -40,6 +41,7 @@ class MyRouter {
   static var privacypolicy = "/privacypolicy";
   static var termscondition = "/termscondition";
 
+
   static var route = [
     GetPage(name: '/', page: () => SplashScreen()),
     GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
@@ -60,7 +62,7 @@ class MyRouter {
     GetPage(name: MyRouter.settings, page: () => const Settings()),
     GetPage(name: MyRouter.privacypolicy, page: () => const Privacypolicy()),
     GetPage(name: MyRouter.termscondition, page: () => const TermsCondition()),
-    // GetPage(name: MyRouter.changePassword, page: () => const ChangePassword()),
+     GetPage(name: MyRouter.changePassword, page: () => const ChangePassword()),
 
   ];
 }

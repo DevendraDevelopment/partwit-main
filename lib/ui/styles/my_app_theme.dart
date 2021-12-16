@@ -15,6 +15,7 @@ class MyAppTheme {
   static const textPrimary = Color(0xFF474747);
   static const whiteColor = Color(0xFFFFFFFF);
   static const buttonShadow_Color = Color(0xFFFFE572);
+  static const txtShadow_Color = Color(0xFFf2f3ee);
   static const pin_bg_Color = Color(0xFFF7DB5F);
   static const black_Color = Color(0xFF000000);
   static const border_Color = Color(0xFF000000);

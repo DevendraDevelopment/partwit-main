@@ -71,7 +71,7 @@ class _SettingsState extends State<Settings> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           LightTextBody(
-                            data: 'notifications'.tr,
+                            data: 'Notifications'.tr,
                           ),
                           CupertinoSwitch(
                             activeColor: MyAppTheme.buttonColor,
@@ -89,12 +89,18 @@ class _SettingsState extends State<Settings> {
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                       child: Divider(color: MyAppTheme.border_Color),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-                      child: LightTextBody(
-                        data: 'changePsw'.tr,
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(MyRouter.changePassword,);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
+                        child: LightTextBody(
+                          data: 'Change Password'.tr,
+                        ),
                       ),
-                    ),
+                    )
+                    ,
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                       child: Divider(color: MyAppTheme.border_Color),
@@ -105,14 +111,14 @@ class _SettingsState extends State<Settings> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           LightTextBody(
-                            data: 'language'.tr,
+                            data: 'Language'.tr,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               LightTextBody(
-                                data: 'lang_en'.tr,
+                                data: 'English'.tr,
                               ),
                               const Icon(Icons.arrow_drop_down_outlined)
                             ],
@@ -127,7 +133,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
                       child: LightTextBody(
-                        data: 'privacyPolicy'.tr,
+                        data: 'PrivacyPolicy'.tr,
                       ),
                     ),
                     const Padding(
@@ -137,7 +143,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 10, 30),
                       child: LightTextBody(
-                        data: 'terms'.tr,
+                        data: 'Terms & Condition'.tr,
                       ),
                     ),
                   ],
