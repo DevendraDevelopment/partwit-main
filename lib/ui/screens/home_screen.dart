@@ -70,8 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Scaffold(
             appBar: AppBar(
-              systemOverlayStyle:
-                  const SystemUiOverlayStyle(statusBarColor: Colors.orange),
+              // systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.orange),
               backgroundColor: MyAppTheme.backgroundColor,
               centerTitle: true,
               title: Container(
@@ -103,81 +102,79 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: SafeArea(
               child: _currentPage == 0
-                  ? Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Container(
-                              height: 40,
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              width: MediaQuery.of(context).size.width,
-                              child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: 20,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
-                                      },
-                                      child: Card(
-                                        color: selectedIndex == index
-                                            ? Colors.yellow
-                                            : Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                              color: Colors.white70, width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        ),
-                                        child: Container(
-                                          width: 120,
-                                          height: 50,
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0, right: 10.0),
-                                          child: Center(
-                                              child: Text(
-                                            "Item Category",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold,
-                                                color: selectedIndex == index
-                                                    ? MyAppTheme.whiteColor
-                                                    : MyAppTheme.black_Color),
-                                          )),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GridView.builder(
-                              itemCount: 20,
-                              shrinkWrap: true,
-                              primary: false,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: (itemWidth / itemHeight),
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return item_home_grid();
+                  ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: 40,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: 20,
+                          itemBuilder:
+                              (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
                               },
-                            ),
-                          ],
-                        ),
+                              child: Card(
+                                color: selectedIndex == index
+                                    ? Colors.yellow
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      color: Colors.white70, width: 1),
+                                  borderRadius:
+                                  BorderRadius.circular(50),
+                                ),
+                                child: Container(
+                                  width: 120,
+                                  height: 50,
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  child: Center(
+                                      child: Text(
+                                        "Item Category",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: selectedIndex == index
+                                                ? MyAppTheme.whiteColor
+                                                : MyAppTheme.black_Color),
+                                      )),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GridView.builder(
+                      itemCount: 20,
+                      shrinkWrap: true,
+                      primary: false,
+                      gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: (itemWidth / itemHeight),
                       ),
-                    )
+                      itemBuilder: (BuildContext context, int index) {
+                        return item_home_grid();
+                      },
+                    ),
+                  ],
+                ),
+              )
                   : navigationPage.elementAt(_currentPage),
             ),
             bottomNavigationBar: _createBottomNavigationBar()));

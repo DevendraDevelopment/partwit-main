@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:part_wit/model/CommonResponse.dart';
 import 'package:part_wit/utils/Helpers.dart';
-import 'package:part_wit/utils/constaint.dart';
+import 'package:part_wit/utils/ApiConstant.dart';
 
 Future<CommonResponse> createRegister(
     String token, BuildContext context) async {

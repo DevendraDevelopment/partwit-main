@@ -13,16 +13,14 @@ class LightTextBodyBold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        data,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontStyle: FontStyle.normal,
-          fontSize: 16,
-          color: MyAppTheme.black_Color,
-          fontFamily: Fonts.biotifNormal,
-        ),
+    return Text(
+      data,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.normal,
+        fontSize: 18,
+        color: MyAppTheme.black_Color,
+        fontFamily: Fonts.biotifNormal,
       ),
     );
   }

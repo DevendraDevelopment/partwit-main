@@ -17,6 +17,7 @@ import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
 import 'package:part_wit/utils/Helpers.dart';
 import 'package:part_wit/utils/utility.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfile extends StatefulWidget {
@@ -70,16 +71,19 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: screenSize.height * 0.05,
                 ),
-                Row(
+                Stack(
                   children: [
-                    IconButton(icon: const Icon(
+                    Center(child: IconButton(
+                        icon: const Icon(
                           Icons.arrow_back,
                           size: 35,
                         ),
-                        onPressed: () => {Get.back()}),
-                    Center(
+                        onPressed: () => {Get.back()}),)
+                    ,
+                    Flexible(
+                        child: Center(
                       child: Image.asset(MyImages.ic_app_logo),
-                    ),
+                    )),
                   ],
                 ),
                 SizedBox(
@@ -216,15 +220,21 @@ class _EditProfileState extends State<EditProfile> {
                             Helpers.verifyInternet().then((internet) {
                               if (internet) {
                                 if (_imageFile == null) {
-                                  createUserUpdateData(File(""), _usernameController.text, context).then((response) {
+                                  createUserUpdateData(File(""),
+                                          _usernameController.text, context)
+                                      .then((response) {
                                     setState(() {
-                                      Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+                                      Navigator.pushReplacementNamed(
+                                          context, MyRouter.userProfile);
                                     });
                                   });
-                                }  else {
-                                  createUserUpdateData(_imageFile!, _usernameController.text, context).then((response) {
+                                } else {
+                                  createUserUpdateData(_imageFile!,
+                                          _usernameController.text, context)
+                                      .then((response) {
                                     setState(() {
-                                      Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+                                      Navigator.pushReplacementNamed(
+                                          context, MyRouter.userProfile);
                                     });
                                   });
                                 }
@@ -258,24 +268,27 @@ class _EditProfileState extends State<EditProfile> {
             onTap: () {
               openSheet();
             },
-            child: _imageFile != null?
-            getImageWidget():
-            imgUrl != null
-                ? CircleAvatar(
-                    radius: 60.0, backgroundImage: NetworkImage(imgUrl!))
-                : getImageWidget(),
+            child: _imageFile != null
+                ? getImageWidget()
+                : imgUrl != null
+                    ? CircleAvatar(
+                        radius: 60.0, backgroundImage: NetworkImage(imgUrl!))
+                    : getImageWidget(),
           )),
           Positioned(
-            bottom: 8,
+            bottom: 0,
             right: 5,
             child: InkWell(
               onTap: () {
                 openSheet();
               },
-              child: const Icon(
-                Icons.add_circle_outline,
-                color: Colors.black,
-                size: 28,
+              child: const Material(
+                color: Colors.white,
+                shape: CircleBorder(),
+                child: ImageIcon(
+                  AssetImage(MyImages.icEdit),
+                  color: Color(0xFF3A5A98),
+                ),
               ),
             ),
           ),
@@ -360,18 +373,23 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: screenSize.width * 0.03,
                 ),
-                TextButton.icon(
-                  icon: const Icon(
-                    Icons.image,
-                    color: MyAppTheme.whiteColor,
+                GestureDetector(
+                  child: SvgPicture.asset(
+                    MyImages.icEdit,
+                    alignment: Alignment.centerRight,
+                    allowDrawingOutsideViewBox: false,
                   ),
-                  onPressed: () {
+                  // Icon(
+                  //   Icons.image,
+                  //   color: MyAppTheme.whiteColor,
+                  // ),
+                  onTap: () {
                     Get.back();
                     takePhoto(ImageSource.gallery);
                   },
-                  label: LightTextBody(
-                    data: 'gallery'.tr,
-                  ),
+                  // label: LightTextBody(
+                  //   data: 'gallery'.tr,
+                  // ),
                 )
               ],
             )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
+import 'package:part_wit/ui/widgets/text_body_botton.dart';
 
 import 'light_text_body.dart';
 
@@ -22,7 +23,7 @@ class CustomButton extends StatelessWidget {
           Image.asset(
             MyImages.ic_button_bg, width: double.infinity,
           ),
-          LightTextBody(
+          TextBodyButton(
             data: inputText,
           ),
         ]),

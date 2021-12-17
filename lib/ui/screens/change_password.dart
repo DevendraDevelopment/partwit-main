@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:part_wit/repository/verify_reset_password.dart';
+import 'package:part_wit/ui/screens/signup_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
@@ -106,7 +107,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter old password';
+                        return 'Please enter Confirm password';
+                      } else if (value.length < 7) {
+                        return 'Password must be greater then 7';
+                      } else if (!validatePassword(value)) {
+                        return 'Password must be combination of characters and digits';
+                      } else if (value.length > 16) {
+                        return 'Password must be less then 16';
                       }
                       return null;
                     },
@@ -156,7 +163,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter password';
+                        return 'Please enter Confirm password';
+                      } else if (value.length < 7) {
+                        return 'Password must be greater then 7';
+                      } else if (!validatePassword(value)) {
+                        return 'Password must be combination of characters and digits';
+                      } else if (value.length > 16) {
+                        return 'Password must be less then 16';
                       }
                       return null;
                     },
@@ -206,7 +219,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter confirm password';
+                        return 'Please enter Confirm password';
+                      } else if (value.length < 7) {
+                        return 'Password must be greater then 7';
+                      } else if (!validatePassword(value)) {
+                        return 'Password must be combination of characters and digits';
+                      } else if (value.length > 16) {
+                        return 'Password must be less then 16';
                       }
                       return null;
                     },

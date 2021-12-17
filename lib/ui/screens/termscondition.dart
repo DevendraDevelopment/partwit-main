@@ -41,17 +41,17 @@ class _TermsConditionState extends State<TermsCondition> {
         child: SingleChildScrollView(
           child: Center(
             child: Container(
-              margin: EdgeInsets.only(top: 15.0, right: 15.0, left: 15.0),
+              margin: const EdgeInsets.only(top: 15.0, right: 16.0, left: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
                   SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   LightTextBodyBold(data: Constant.TERMS),
                   SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   LightTextBody(data: Constant.PRIVACYPOLICY),
                   SizedBox(

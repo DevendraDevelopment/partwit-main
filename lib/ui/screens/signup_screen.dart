@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -13,9 +15,12 @@ import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/utils/Helpers.dart';
-import 'package:part_wit/utils/constaint.dart';
+import 'package:part_wit/utils/ApiConstant.dart';
 import 'package:part_wit/utils/constant.dart';
 import 'package:part_wit/utils/utility.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -34,13 +39,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isEmailFocus = false,
       _isConfirmPasswordFocus = false,
       _isAgreeCheckBox = true;
-  TextEditingController _passwordController = new TextEditingController();
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _confrimpasswordController =
-      new TextEditingController();
-  FocusNode passWordFocus = new FocusNode();
-  FocusNode confrmPassWordFocus = new FocusNode();
-  FocusNode emailFocus = new FocusNode();
+  bool isIOS = false;
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _confrimpasswordController =
+      TextEditingController();
+  FocusNode passWordFocus = FocusNode();
+  FocusNode confrmPassWordFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
 
   @override
   void dispose() {
@@ -49,14 +56,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  GoogleSignInAccount? _currentUser;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    // Optional clientId
+    // clientId: '740034809617-kpifjtk2mvnch6i6c92g9tnpr6ljekp3.apps.googleusercontent.com',
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
   @override
   initState() {
+    setState(() {
+      if (Platform.isAndroid) {
+        // Android-specific code
+        isIOS = false;
+      } else if (Platform.isIOS) {
+        isIOS = true;
+        // iOS-specific code
+      }
+      _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+        setState(() {
+          _currentUser = account;
+          print("GOOGLE1" + _currentUser!.email.toString());
+        });
+      });
+    });
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: MyAppTheme.backgroundColor),
     );
   }
+
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +151,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter email address';
-                      }
-                      /*else if (!isEmail(_emailController.text)) {
+                      } else if (!isEmail(_emailController.text)) {
                         return 'Please enter valid email address';
-                      }*/
+                      }
                       return null;
                     },
                     decoration: InputDecoration(
@@ -156,9 +198,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 5) {
-                        return 'Password must be greater then 5';
+                        return 'Please enter Confirm password';
+                      } else if (value.length < 7) {
+                        return 'Password must be greater then 7';
+                      } else if (!validatePassword(value)) {
+                        return 'Password must be combination of characters and digits';
+                      } else if (value.length > 16) {
+                        return 'Password must be less then 16';
                       }
                       return null;
                     },
@@ -215,8 +261,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter Confirm password';
-                      } else if (value.length < 5) {
-                        return 'Password must be greater then 5';
+                      } else if (value.length < 7) {
+                        return 'Password must be greater then 7';
+                      } else if (!validatePassword(value)) {
+                        return 'Password must be combination of characters and digits';
+                      } else if (value.length > 16) {
+                        return 'Password must be less then 16';
                       }
                       return null;
                     },
@@ -294,7 +344,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: screenSize.height * 0.001,
                     ),
-                    Flexible(child: InkWell(
+                    Flexible(
+                        child: InkWell(
                       onTap: () {
                         Get.toNamed(MyRouter.privacypolicy);
                       },
@@ -333,7 +384,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     setState(() {
                                       model = response;
                                       loginAndRegistrationresponse = response;
-                                      print(loginAndRegistrationresponse!.token);
+                                      print(
+                                          loginAndRegistrationresponse!.token);
                                       if (model!.status) {
                                         print("Response  " + model.toString());
                                         Navigator.push(
@@ -376,7 +428,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                Row(
+                socialMedialSignIn(screenSize),
+                /*Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
@@ -395,7 +448,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       MyImages.ic_mac,
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
@@ -403,15 +456,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const LightTextBody(data: Constant.ALREADY_AN_ACC),
-                    SizedBox(
-                      width: screenSize.height * 0.01,
-                    ),
+
                     InkWell(
                       onTap: () {
                         Get.toNamed(MyRouter.loginScreen);
                       },
-                      child: LightTextBodyBlack(
-                        data: Constant.SIGNIN_HERE,
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(4, 6, 6, 6),
+                        child: LightTextBodyBlack(
+                          data: Constant.SIGNIN_HERE,
+                        ),
                       ),
                     )
                   ],
@@ -426,13 +480,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  Row socialMedialSignIn(Size screenSize) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            FacebookAuth.instance
+                .login(permissions: ["public_profile", "email"]).then((value) {
+              print("FB DATA :: " +
+                  value.toString() +
+                  "\n" +
+                  value.status.toString());
+              print("FB DATA 1 :: " + value.accessToken.toString());
+              FacebookAuth.instance.getUserData().then((userData) {
+                setState(() {
+                  // _isLoggedIn = true;
+                  // _userObj = userData;
+                  // print("USER DATA :: " + _userObj.toString());
+                });
+              });
+            });
+          },
+          child: Image.asset(
+            MyImages.ic_fb,
+          ),
+        ),
+        SizedBox(
+          width: screenSize.height * 0.02,
+        ),
+        GestureDetector(
+          onTap: () {
+            _handleSignIn();
+            print("USER :: " + _currentUser!.email);
+          }, // handle your image tap here
+          child: Image.asset(
+            MyImages.ic_gplus,
+          ),
+        ),
+        Visibility(
+          child: Row(
+            children: [
+              SizedBox(
+                width: screenSize.height * 0.02,
+              ),
+              GestureDetector(
+                child: Image.asset(
+                  MyImages.ic_mac,
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
+          visible: isIOS,
+        ),
+      ],
+    );
+  }
 }
 
 bool isEmail(String em) {
-  String p =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  return RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(em);
+}
 
-  RegExp regExp = new RegExp(p);
-
-  return regExp.hasMatch(em);
+bool validatePassword(String value) {
+  return RegExp(r'^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+      .hasMatch(value);
 }

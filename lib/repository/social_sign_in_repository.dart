@@ -5,19 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/utils/Helpers.dart';
-import 'package:part_wit/utils/constaint.dart';
+import 'package:part_wit/utils/ApiConstant.dart';
 
 Future<ModeRegister> createRegister(String socialId, String socialType, String mobile,
     String email, String password, BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   Uri url = Uri.parse(ApiUrls.registerUrl);
-  var map = <String, dynamic>{};
-  map['social_id'] = socialId;
-  map['social_type'] = socialType;
-  map['email'] = email;
-  map['mobile'] = mobile;
-  map['device_id'] = '43346436';
+  Map<String, dynamic> map = postParam(socialId, socialType, email, mobile);
+
   http.Response response = await http.post(
     url,
     body: map,
@@ -39,4 +35,15 @@ Future<ModeRegister> createRegister(String socialId, String socialType, String m
     throw Exception(response.body);
   }
   return ModeRegister.fromJson(json.decode(response.body));
+}
+
+Map<String, dynamic> postParam(String socialId, String socialType, String email, String mobile) {
+  var map = <String, dynamic>{};
+  map['social_id'] = socialId;
+  map['social_type'] = socialType;
+  map['email'] = email;
+  map['mobile'] = mobile;
+  map['device_id'] = '43346436';
+
+  return map;
 }

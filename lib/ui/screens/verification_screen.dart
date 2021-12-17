@@ -95,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     children: [
                       Container(
                         margin: EdgeInsets.fromLTRB(
-                            screenWidth * 0.050, 0, screenWidth * 0.050, 0),
+                            screenWidth * 0.150, 0, screenWidth * 0.150, 0),
                         color: MyAppTheme.backgroundColor,
                         child: PinPut(
                           fieldsCount: 4,

@@ -64,7 +64,7 @@ class _CreateProfileState extends State<CreateProfile> {
                 ),
                 imageProfile(context),
                 SizedBox(
-                  height: screenSize.height * 0.05,
+                  height: screenSize.height * 0.02,
                 ),
                 const LightTextBody(
                   data: Constant.UPLOAD_PROFILE,
@@ -90,10 +90,9 @@ class _CreateProfileState extends State<CreateProfile> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter name';
+                      } else if (!validateName(value)){
+                        return 'Name must be valid and doesn\'t allow any special character' ;
                       }
-                      /* else if (!isEmail(_emailController.text)) {
-                        return 'Please enter valid email address';
-                      }*/
                       return null;
                     },
                     decoration: InputDecoration(
@@ -129,6 +128,10 @@ class _CreateProfileState extends State<CreateProfile> {
                         Constant.CONTINUE,
                         54,
                         onPressed: () {
+                          if (_imageFile == null) {
+                            Helpers.createSnackBar(context,
+                                "Please Upload your image first then proceed");
+                          }
                           if (profileFormKey.currentState!.validate()) {
                             FocusScope.of(this.context).requestFocus(FocusNode());
                             Helpers.verifyInternet().then((internet) {
@@ -168,19 +171,20 @@ class _CreateProfileState extends State<CreateProfile> {
             },
             child: getImageWidget(),
           )),
-          Positioned(
-            bottom: 8,
-            right: 5,
-            child: InkWell(
-              onTap: () {
-                openSheet();
-              },
-              child: const Icon(
+          const Positioned(
+            bottom: 0,
+            right: 10,
+            child:
+            Material(
+              color:Colors.white,
+              shape: CircleBorder(),
+              child:
+              Icon(
                 Icons.add_circle_outline,
                 color: Colors.blue,
-                size: 28,
+                size: 34,
               ),
-            ),
+            )
           ),
         ],
       ),
@@ -302,4 +306,10 @@ class _CreateProfileState extends State<CreateProfile> {
       ),
     );
   }
+
+  bool validateName(String value) {
+    return RegExp(r'^(?=.*?[a-zA-Z0-9]).{3,80}$')
+        .hasMatch(value);
+  }
+
 }
