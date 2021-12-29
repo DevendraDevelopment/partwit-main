@@ -33,6 +33,7 @@ class _PrivacypolicyState extends State<Privacypolicy> {
                 IconButton(icon: const Icon(
                   Icons.arrow_back,
                   size: 35,
+                  color: MyAppTheme.black_Color,
                 ),
                     onPressed: () => {Get.back()}),
           ),

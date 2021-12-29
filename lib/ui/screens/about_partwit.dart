@@ -3,6 +3,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
+import 'package:part_wit/ui/widgets/custom_widgets/common_widget.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
 import 'package:part_wit/utils/constant.dart';
@@ -19,7 +20,7 @@ class AboutPartWit extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildSizedBox(screenSize.height * 0.07),
+            addHeight(screenSize.height * 0.07),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,13 +36,13 @@ class AboutPartWit extends StatelessWidget {
             Center(
               child: Image.asset(MyImages.ic_app_logo),
             ),
-            buildSizedBox(
+            addHeight(
               screenSize.height * 0.03,
             ),
             LightTextHead(
               data: 'aboutPartWit'.tr,
             ),
-            buildSizedBox(
+            addHeight(
               screenSize.height * 0.05,
             ),
             const Padding(
@@ -50,7 +51,7 @@ class AboutPartWit extends StatelessWidget {
                 data: Constant.LOREM,
               ),
             ),
-            buildSizedBox(
+            addHeight(
               screenSize.height * 0.05,
             ),
           ],
@@ -59,9 +60,4 @@ class AboutPartWit extends StatelessWidget {
     );
   }
 
-  SizedBox buildSizedBox(double size) {
-    return SizedBox(
-      height: size,
-    );
-  }
 }

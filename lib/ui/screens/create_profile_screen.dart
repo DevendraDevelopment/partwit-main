@@ -1,11 +1,9 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:part_wit/repository/update_user_profile_repository.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:part_wit/repository/user_sign_up_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
@@ -19,13 +17,16 @@ import 'package:permission_handler/permission_handler.dart';
 
 
 class CreateProfile extends StatefulWidget {
-  const CreateProfile({Key? key}) : super(key: key);
+  String email, password;
+
+  CreateProfile(this.email, this.password, {Key? key}) : super(key: key);
 
   @override
-  State<CreateProfile> createState() => _CreateProfileState();
+  State<CreateProfile> createState() => _CreateProfileState(email, password);
 }
 
 class _CreateProfileState extends State<CreateProfile> {
+  String email, password;
   final profileFormKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   FocusNode nameFocus = FocusNode();
@@ -33,9 +34,23 @@ class _CreateProfileState extends State<CreateProfile> {
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
+  _CreateProfileState(this.email, this.password);
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.addListener(() {
+      if (validateName(_nameController.text)) {
+        profileFormKey.currentState!.validate();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery
+        .of(context)
+        .size;
     return GestureDetector(
       onTap: () {
         Utility.hideKeyboard(context);
@@ -84,19 +99,20 @@ class _CreateProfileState extends State<CreateProfile> {
                     focusNode: nameFocus,
                     controller: _nameController,
                     onTap: () {
-                      setState(() {
-                      });
+                      setState(() {});
                     },
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.trim().isEmpty) {
                         return 'Please enter name';
-                      } else if (!validateName(value)){
-                        return 'Name must be valid and doesn\'t allow any special character' ;
+                      } else if (!validateName(value)) {
+                        return 'Name must be valid and doesn\'t allow any special character';
                       }
                       return null;
                     },
+                    textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                       filled: true,
+                      errorMaxLines: 2,
                       fillColor: MyAppTheme.buttonShadow_Color,
                       hintText: Constant.YOUR_NAME,
                       prefixIcon: Image.asset(MyImages.ic_feather_user),
@@ -107,9 +123,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
+                          BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
+                          BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.whiteColor, width: 2.0),
@@ -133,17 +149,27 @@ class _CreateProfileState extends State<CreateProfile> {
                                 "Please Upload your image first then proceed");
                           }
                           if (profileFormKey.currentState!.validate()) {
-                            FocusScope.of(this.context).requestFocus(FocusNode());
+                            FocusScope.of(this.context).requestFocus(
+                                FocusNode());
                             Helpers.verifyInternet().then((internet) {
                               if (internet) {
-                                createUserUpdateData(_imageFile!, _nameController.text, context).then((response) {
-                                  setState(() {
-                                    Get.toNamed(MyRouter.welcomeScreen);
-                                  });
-                                });
+                                createRegistration(_imageFile!,
+                                    email,
+                                    _nameController.text.trim(),
+                                    password,
+                                    context
+                                ).then((value) => {
+                                // if (value.status) {
+                                //     Helpers.createSnackBar(context,
+                                //     "Please check your internet connection"),
+                                setState(() {
+                                  Navigator.pushReplacementNamed(context, MyRouter.welcomeScreen);
+                                })
+                              // }
+                            });
                               } else {
-                                Helpers.createSnackBar(context,
-                                    "Please check your internet connection");
+                              Helpers.createSnackBar(context,
+                              "Please check your internet connection");
                               }
                             });
                           }
@@ -166,28 +192,42 @@ class _CreateProfileState extends State<CreateProfile> {
         children: [
           Positioned(
               child: InkWell(
-            onTap: () {
-              openSheet();
-            },
-            child: getImageWidget(),
-          )),
-          const Positioned(
+                onTap: () {
+                  openSheet();
+                },
+                child: getImageWidget(),
+              )),
+          Positioned(
             bottom: 0,
-            right: 10,
-            child:
-            Material(
-              color:Colors.white,
-              shape: CircleBorder(),
-              child:
-              Icon(
+            right: 5,
+            child: InkWell(
+              onTap: () {
+                openSheet();
+              },
+              child: const Icon(
                 Icons.add_circle_outline,
                 color: Colors.blue,
                 size: 34,
               ),
-            )
+            ),
+            // const Positioned(
+            //   bottom: 0,
+            //   right: 10,
+            //   child:
+            //   Material(
+            //     color:Colors.white,
+            //     shape: CircleBorder(),
+            //     child:
+            //     Icon(
+            //       Icons.add_circle_outline,
+            //       color: Colors.blue,
+            //       size: 34,
+            //     ),
+            //   )
           ),
         ],
-      ),
+      )
+      ,
     );
   }
 
@@ -204,8 +244,9 @@ class _CreateProfileState extends State<CreateProfile> {
       setState(() => this._imageFile = imageTemporary);
 
       Navigator.pop(context);
-    }  on Exception catch (_) { }
+    } on Exception catch (_) {}
   }
+
   void checkPermission() async {
     await _handleLocationPermission(Permission.camera);
     await _handleLocationPermission(Permission.photos);
@@ -213,10 +254,10 @@ class _CreateProfileState extends State<CreateProfile> {
 
   Future<void> _handleLocationPermission(Permission permission) async {
     final status = await permission.request();
-    if(status.isGranted){
+    if (status.isGranted) {
       Helpers.createSnackBar(context, "Permission Accessed");
       // Navigator.pushReplacementNamed(context,MyRouter.loginScreen);
-    }else if(status.isDenied){
+    } else if (status.isDenied) {
       Helpers.createSnackBar(context, "Permission Denied");
     }
   }
@@ -228,7 +269,9 @@ class _CreateProfileState extends State<CreateProfile> {
         radius: 60,
         child: CircleAvatar(
           radius: 58.0,
-          backgroundImage: Image.file(_imageFile!).image,
+          backgroundImage: Image
+              .file(_imageFile!)
+              .image,
         ),
       );
     } else {
@@ -238,8 +281,8 @@ class _CreateProfileState extends State<CreateProfile> {
           child: CircleAvatar(
             radius: 58,
             backgroundImage: AssetImage(MyImages
-                    .ic_person //Convert File type of image to asset image path),
-                ),
+                .ic_person //Convert File type of image to asset image path),
+            ),
           ));
     }
   }
@@ -254,7 +297,10 @@ class _CreateProfileState extends State<CreateProfile> {
   bottomSheet(BuildContext context) {
     return Container(
       height: 100.0,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
@@ -308,7 +354,7 @@ class _CreateProfileState extends State<CreateProfile> {
   }
 
   bool validateName(String value) {
-    return RegExp(r'^(?=.*?[a-zA-Z0-9]).{3,80}$')
+    return RegExp(r'^(?=.*?[a-zA-Z ]).{3,15}$')
         .hasMatch(value);
   }
 

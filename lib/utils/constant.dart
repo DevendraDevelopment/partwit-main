@@ -6,6 +6,7 @@ class Constant {
 
   static const USER_EMAIL = 'Email Address';
   static const USER_PASSWORD = 'Password';
+  static const NEW_PASSWORD = 'New Password';
   static const RE_ENTER_PASSWORD = 'Re-enter Password';
   static const FACE_ID = 'Use Face ID';
   static const FORGOT_PASSWORD = 'Forgot Password?';
@@ -30,14 +31,15 @@ class Constant {
  static const ALREADY_AN_ACC='Already have an account?';
  static const SIGNIN_HERE='Sign In here';
 
-  static const SIGNUP = 'Sign Up';
-  static const AGREE = ' I agree with';
-  static const DONT = 'Dont ask on this device again';
+  static const SIGNUP = 'Sign up';
+  static const AGREE = 'I agree with ';
+  static const DONT = 'Don\'t ask on this device again';
   static const TERMS = 'Terms & Condition';
-  static const AND = 'and';
+  static const AND = ' and ';
   static const POLICY = 'Privacy Policy';
   static const String is_logged_in = "isLoggedIn";
   static const CONFIRM_PSW = 'Confirm Password';
+  static const CONFIRM_NEW_PSW = 'Confirm New Password';
   static const REGISTER = 'Register';
   static const RESETNEWPASSWORD = 'Set New Password';
   static const PRIVACYPOLICY = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod. Dictum fusce ut placerat orci nulla. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Tempor id eu nisl nunc mi ipsum faucibus. Fusce id velit ut tortor pretium. Massa ultricies mi quis hendrerit dolor magna eget. Nullam eget felis eget nunc lobortis. Faucibus ornare suspendisse sed nisi. Sagittis eu volutpat odio facilisis mauris sit amet massa. Erat velit scelerisque in dictum non consectetur a erat. Amet nulla facilisi morbi tempus iaculis urna. Egestas';
@@ -46,10 +48,10 @@ class Constant {
   static const VERIFICATION = 'Verification';
   static const STEPVERIFICATION = '2 Step Verification';
   static const ENTER_VERIFICATION = 'Please enter the verification code';
-  static const SEND_VERIFICATION = 'send to ';
+  static const SEND_VERIFICATION = 'sent to ';
   static const SUBMIT = 'Submit';
 
-  static const DONT_RECEIVE = 'Did\'t receive a text?';
+  static const DONT_RECEIVE = 'Didn\'t receive a text?';
   static const RESEND_CODE = 'Resend Code';
 
   static const CREATE_PROFILE = 'Create Profile';

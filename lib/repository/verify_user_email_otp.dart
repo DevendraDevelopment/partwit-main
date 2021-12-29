@@ -8,18 +8,18 @@ import 'package:part_wit/utils/Helpers.dart';
 import 'package:part_wit/utils/ApiConstant.dart';
 
 Future<CommonResponse> createVerifyUserEmailOtp(
-    String otp, BuildContext context) async {
+    String otp, String email, BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var url = Uri.parse(ApiUrls.verifyUserEmailOtpUrl);
   var map = <String, dynamic>{};
   map['otp'] = otp;
+  map['email'] = email;
   http.Response response = await http.post(
     url,
-    headers: {'Authorization': "Bearer " + loginAndRegistrationresponse!.token},
+    // headers: {'Authorization': "Bearer " + loginAndRegistrationresponse!.token},
     body: map,
   );
-
   if (response.statusCode == 200) {
     Helpers.hideLoader(loader);
     bool status;

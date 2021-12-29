@@ -4,12 +4,13 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/login_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:part_wit/ui/widgets/bold_text_sub_head.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
-import 'package:part_wit/ui/widgets/light_text_sub_head.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
@@ -38,7 +39,7 @@ class _SettingsState extends State<Settings> {
         ),
         leading: Builder(
           builder: (context) => IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back,color: MyAppTheme.black_Color, size: 35,),
               onPressed: () => {Get.back()}),
         ),
       ),
@@ -49,8 +50,8 @@ class _SettingsState extends State<Settings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
-              child: LightTextSubHead(
+              padding: const EdgeInsets.fromLTRB(30, 20, 0, 10),
+              child: BoldTextSubHead(
                 data: 'Settings'.tr,
               ),
             ),
@@ -169,19 +170,55 @@ class _SettingsState extends State<Settings> {
               'logout'.tr,
               50,
               onPressed: () async {
-                try {
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  await preferences.clear();
-                  Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
-                } on Exception catch (e) {
-                  e.printError();
-                }
+                showAlertDialog(context);
               },
             ),
           ],
         ),
       ),
+    );
+  }
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+        onPressed: () async {
+        try {
+          SharedPreferences preferences =
+              await SharedPreferences.getInstance();
+          await preferences.clear();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginScreen()
+              ),
+              ModalRoute.withName("/LoginScreen")
+          );
+        } on Exception catch (e) {
+          e.printError();
+        }
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Log Out"),
+      content: const Text("Are you sure want to Logout?"),
+      actions: [
+        cancelButton,
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

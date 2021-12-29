@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/home_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
@@ -60,7 +61,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Constant.CONTINUE,
                   54,
                   onPressed: () {
-                    Get.toNamed(MyRouter.homeScreen);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeScreen(0)),
+                        ModalRoute.withName("/HomeScreen"));
+                    // Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
+                    // Get.toNamed(MyRouter.homeScreen);
                   },
                 ),
               ],

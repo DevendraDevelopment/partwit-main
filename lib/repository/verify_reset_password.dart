@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:part_wit/model/CommonResponse.dart';
+import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/utils/Helpers.dart';
 import 'package:part_wit/utils/ApiConstant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<CommonResponse> createResetNewPassword(
     String email, String pass, String confrmpass, BuildContext context) async {
@@ -52,9 +54,11 @@ Future<CommonResponse> createOldPassword(String oldpass, String pass,
   map['old_password'] = oldpass;
   map['password'] = pass;
   map['confirm_password'] = confrmpass;
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  var user = ModeRegister.fromJson(jsonDecode(pref.getString('user')!));
   http.Response response = await http.post(
     url,
-    headers: {'Authorization': "Bearer " + loginAndRegistrationresponse!.token},
+    headers: {'Authorization': "Bearer " + user.token},
     body: map,
   );
 

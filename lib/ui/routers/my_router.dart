@@ -11,7 +11,7 @@ import 'package:part_wit/ui/screens/login_screen.dart';
 import 'package:part_wit/ui/screens/notifications.dart';
 import 'package:part_wit/ui/screens/plan_screen.dart';
 import 'package:part_wit/ui/screens/privacypolicy.dart';
-import 'package:part_wit/ui/screens/profile_screen.dart';
+import 'package:part_wit/ui/screens/home_pages/profile_screen.dart';
 import 'package:part_wit/ui/screens/reset_new_password.dart';
 import 'package:part_wit/ui/screens/save_items_screen.dart';
 import 'package:part_wit/ui/screens/seller_all_review_screen.dart';
@@ -37,7 +37,7 @@ class MyRouter {
   static var createProfile = "/createProfile";
   static var welcomeScreen = "/welcomeScreen";
   static var forgotPassword = "/forgotPassword";
-  static var userProfile = "/forgotPassword";
+  static var userProfile = "/userProfile";
   static var saveItems = "/saveItems";
   static var editProfile = "/editProfile";
   static var yourReview = "/yourReview";
@@ -56,13 +56,13 @@ class MyRouter {
 
   static var route = [
     GetPage(name: '/', page: () => SplashScreen()),
-    GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
+    GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen(0)),
     GetPage(name: MyRouter.locationScreen, page: () => const LocationScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.signupScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.verificationForgetPasswordScreen, page: () =>  VerificationForgetPasswordScreen("","")),
-    GetPage(name: MyRouter.verificationScreen, page: () =>  VerificationScreen("","")),
-    GetPage(name: MyRouter.createProfile, page: () => const CreateProfile()),
+    GetPage(name: MyRouter.verificationScreen, page: () =>  VerificationScreen("","", "")),
+    GetPage(name: MyRouter.createProfile, page: () => CreateProfile("", "")),
     GetPage(name: MyRouter.welcomeScreen, page: () => const WelcomeScreen()),
     GetPage(name: MyRouter.forgotPassword, page: () => const ForgotPassword()),
     GetPage(name: MyRouter.resetNewPasswordScreen, page: () =>  ResetNewPassword(email: '',)),

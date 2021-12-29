@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/update_user_profile_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/home_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
@@ -39,15 +40,15 @@ class _EditProfileState extends State<EditProfile> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = ModeRegister.fromJson(jsonDecode(pref.getString('user')!));
     setState(() {
-      _usernameController.text = user.userInfo!.name;
-      _emailController.text = user.userInfo!.email!;
-      imgUrl = user.userInfo!.profilePic!;
+      _usernameController.text =
+          user.userInfo!.name ?? "";
+      _emailController.text = user.userInfo!.email! ?? "";
+      imgUrl = user.userInfo!.profilePic! ?? "";
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUser();
     setState(() {});
@@ -69,22 +70,32 @@ class _EditProfileState extends State<EditProfile> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenSize.height * 0.05,
+                  height: screenSize.height * 0.02,
                 ),
-                Stack(
-                  children: [
-                    Center(child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          size: 35,
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 15, left: 5),
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: MyAppTheme.black_Color,
+                              size: 35,
+                            ),
+                            onPressed: () => {Get.back()}),
+                      ),
+                      Container(
+                          child: Center(
+                        child: Image.asset(
+                          MyImages.ic_app_logo,
+                          width: 80,
+                          height: 80,
                         ),
-                        onPressed: () => {Get.back()}),)
-                    ,
-                    Flexible(
-                        child: Center(
-                      child: Image.asset(MyImages.ic_app_logo),
-                    )),
-                  ],
+                      )),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: screenSize.height * 0.03,
@@ -129,10 +140,20 @@ class _EditProfileState extends State<EditProfile> {
                               enabled: true,
                               obscureText: false,
                               controller: _usernameController,
+                              textInputAction: TextInputAction.done,
+                              validator: (value) {
+                                if (value!.trim().isEmpty) {
+                                  return 'Please enter name';
+                                } else if (!validateName(value)) {
+                                  return 'Name must be valid and doesn\'t allow any special character';
+                                }
+                                return null;
+                              },
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
                                 hintText: 'Enter Your Name'.tr,
+                                errorMaxLines: 2,
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                       color: MyAppTheme.buttonShadow_Color),
@@ -186,21 +207,11 @@ class _EditProfileState extends State<EditProfile> {
                                 filled: true,
                                 fillColor: MyAppTheme.buttonShadow_Color,
                                 hintText: 'Enter Your Email'.tr,
-                                // focusedBorder: OutlineInputBorder(
-                                //   borderSide: const BorderSide(
-                                //       color: MyAppTheme.buttonShadow_Color),
-                                //   borderRadius: BorderRadius.circular(15.0),
-                                // ),
                                 enabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: MyAppTheme.buttonShadow_Color),
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(15.0))),
-                                // border: OutlineInputBorder(
-                                //     borderSide: const BorderSide(
-                                //         color: MyAppTheme.whiteColor,
-                                //         width: 2.0),
-                                //     borderRadius: BorderRadius.circular(15.0)),
                               ),
                             ),
                           ],
@@ -217,32 +228,49 @@ class _EditProfileState extends State<EditProfile> {
                         50,
                         onPressed: () {
                           try {
-                            Helpers.verifyInternet().then((internet) {
-                              if (internet) {
-                                if (_imageFile == null) {
-                                  createUserUpdateData(File(""),
-                                          _usernameController.text, context)
-                                      .then((response) {
-                                    setState(() {
-                                      Navigator.pushReplacementNamed(
-                                          context, MyRouter.userProfile);
+                            if (_formKey.currentState!.validate()) {
+                              Helpers.verifyInternet().then((internet) {
+                                if (internet) {
+                                  if (_imageFile == null) {
+                                    createUserUpdateData(File(""),
+                                        _usernameController.text, context)
+                                        .then((response) {
+                                      setState(() {
+
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => HomeScreen(4)),
+                                            ModalRoute.withName("/HomeScreen"));
+                                      });
                                     });
-                                  });
+                                  } else {
+                                    createUserUpdateData(_imageFile!,
+                                        _usernameController.text.trim(), context)
+                                        .then((response) {
+                                      setState(() {
+
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => HomeScreen(4)),
+                                            ModalRoute.withName("/HomeScreen"));
+                                        /*Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HomeScreen(4),
+                                        ),
+                                      );*/
+                                      });
+                                    });
+                                  }
                                 } else {
-                                  createUserUpdateData(_imageFile!,
-                                          _usernameController.text, context)
-                                      .then((response) {
-                                    setState(() {
-                                      Navigator.pushReplacementNamed(
-                                          context, MyRouter.userProfile);
-                                    });
-                                  });
+                                  Helpers.createSnackBar(context,
+                                      "Please check your internet connection");
                                 }
-                              } else {
-                                Helpers.createSnackBar(context,
-                                    "Please check your internet connection");
-                              }
-                            });
+                              });
+                            }
+
                           } on Exception catch (e) {
                             e.printError();
                           }
@@ -271,8 +299,14 @@ class _EditProfileState extends State<EditProfile> {
             child: _imageFile != null
                 ? getImageWidget()
                 : imgUrl != null
-                    ? CircleAvatar(
+                    ?
+            // FadeInImage.assetNetwork(placeholder: MyImages.loading,//MyImages.ic_person
+            //     fadeOutDuration: Duration(seconds: 2),
+            //     image: imgUrl!
+            // )
+            CircleAvatar(
                         radius: 60.0, backgroundImage: NetworkImage(imgUrl!))
+
                     : getImageWidget(),
           )),
           Positioned(
@@ -282,13 +316,10 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 openSheet();
               },
-              child: const Material(
-                color: Colors.white,
-                shape: CircleBorder(),
-                child: ImageIcon(
-                  AssetImage(MyImages.icEdit),
-                  color: Color(0xFF3A5A98),
-                ),
+              child: SvgPicture.asset(
+                MyImages.icEdit,
+                alignment: Alignment.centerRight,
+                allowDrawingOutsideViewBox: false,
               ),
             ),
           ),
@@ -306,7 +337,11 @@ class _EditProfileState extends State<EditProfile> {
 
     final imageTemporary = File(_imageFile.path);
     this._imageFile = imageTemporary;
-    setState(() => this._imageFile = imageTemporary);
+    try {
+      setState(() => this._imageFile = imageTemporary);
+
+      Navigator.pop(context);
+    } on Exception catch (_) {}
   }
 
   getImageWidget() {
@@ -325,8 +360,7 @@ class _EditProfileState extends State<EditProfile> {
           radius: 60,
           child: CircleAvatar(
             radius: 60,
-            backgroundImage: AssetImage(MyImages
-                    .ic_person //Convert File type of image to asset image path),
+            backgroundImage: AssetImage(MyImages.ic_person //Convert File type of image to asset image path),
                 ),
           ));
     }
@@ -340,10 +374,71 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   bottomSheet(BuildContext context) {
+    return Container(
+      height: 100.0,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Column(
+        children: [
+          const Text('Choose Profile Photo',
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontFamily: 'Opensans',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20)),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton.icon(
+                icon: const Icon(
+                  Icons.camera,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  takePhoto(ImageSource.camera);
+                },
+                label: const Text('Camera',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: 'Opensans',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16)),
+              ),
+              TextButton.icon(
+                icon: const Icon(
+                  Icons.image,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                label: const Text('Gallery',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: 'Opensans',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16)),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  /*
+  bottomSheet(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Container(
-      color: MyAppTheme.backgroundColor,
+      // color: MyAppTheme.backgroundColor,
       height: 100.0,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -355,6 +450,41 @@ class _EditProfileState extends State<EditProfile> {
               height: screenSize.height * 0.01,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton.icon(
+                  icon: const Icon(
+                    Icons.camera,
+                    // color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    takePhoto(ImageSource.camera);
+                  },
+                  label: const Text('Camera',
+                      style: TextStyle(
+                          // color: Colors.grey,
+                          fontFamily: 'Opensans',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16)),
+                ),
+                TextButton.icon(
+                  icon: const Icon(
+                    Icons.image,
+                    // color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    takePhoto(ImageSource.gallery);
+                  },
+                  label: const Text('Gallery',
+                      style: TextStyle(
+                          // color: Colors.grey,
+                          fontFamily: 'Opensans',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16)),
+                )
+              ],
+            )
+            *//*Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton.icon(
@@ -392,10 +522,15 @@ class _EditProfileState extends State<EditProfile> {
                   // ),
                 )
               ],
-            )
+            )*//*
           ],
         ),
       ),
     );
+  }*/
+  bool validateName(String value) {
+    return RegExp(r'^(?=.*?[a-zA-Z ]).{3,80}$')
+        .hasMatch(value);
   }
+
 }

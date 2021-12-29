@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:part_wit/repository/verify_reset_password.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/login_screen.dart';
 import 'package:part_wit/ui/screens/signup_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -25,6 +26,7 @@ class ResetNewPassword extends StatefulWidget {
 
 class _ResetNewPasswordState extends State<ResetNewPassword> {
   final resetPassFormKey = GlobalKey<FormState>();
+  final passFormKey = GlobalKey<FormState>();
   bool _showPassword = false, _showConfirmPassword = false;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -86,60 +88,64 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                 SizedBox(
                   height: screenSize.height * 0.05,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: TextFormField(
-                    style: const TextStyle(
-                        color: MyAppTheme.textPrimary,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14),
-                    controller: _passwordController,
-                    obscureText: !_showPassword,
-                    focusNode: passWordFocus,
-                    onTap: () {
-                      setState(() {});
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter Confirm password';
-                      } else if (value.length < 7) {
-                        return 'Password must be greater then 7';
-                      } else if (!validatePassword(value)) {
-                        return 'Password must be combination of characters and digits';
-                      } else if (value.length > 16) {
-                        return 'Password must be less then 16';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      suffixIconConstraints:
-                          const BoxConstraints(minHeight: 24, minWidth: 24),
-                      filled: true,
-                      fillColor: MyAppTheme.buttonShadow_Color,
-                      hintText: Constant.USER_PASSWORD,
-                      prefixIcon: Image.asset(MyImages.ic_padlock),
-                      // suffixIcon: Image.asset(MyImages.ic_eye_close),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: MyAppTheme.buttonShadow_Color),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
-                      border: OutlineInputBorder(
+                Form(
+                  key: passFormKey,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: TextFormField(
+                      style: const TextStyle(
+                          color: MyAppTheme.textPrimary,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14),
+                      controller: _passwordController,
+                      obscureText: !_showPassword,
+                      focusNode: passWordFocus,
+                      onTap: () {
+                        setState(() {});
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter password';
+                        } else if (value.length < 8) {
+                          return 'Password must be greater then 8';
+                        } else if (!validatePassword(value)) {
+                          return 'Password must be a combination of upper and lower with special char and number';
+                        } else if (value.length > 16) {
+                          return 'Password must be less then 16';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        suffixIconConstraints:
+                            const BoxConstraints(minHeight: 24, minWidth: 24),
+                        filled: true,
+                        errorMaxLines: 2,
+                        fillColor: MyAppTheme.buttonShadow_Color,
+                        hintText: Constant.USER_PASSWORD,
+                        prefixIcon: Image.asset(MyImages.ic_padlock),
+                        // suffixIcon: Image.asset(MyImages.ic_eye_close),
+                        focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              color: MyAppTheme.buttonShadow_Color, width: 2.0),
-                          borderRadius: BorderRadius.circular(15.0)),
-                      suffixIcon: IconButton(
-                        icon: _showPassword
-                            ? const ImageIcon(AssetImage(MyImages.ic_eye_open))
-                            : const ImageIcon(AssetImage(MyImages.ic_eye_close)),
-                        onPressed: () {
-                          setState(() => _showPassword = !_showPassword);
-                        },
+                              color: MyAppTheme.buttonShadow_Color),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: MyAppTheme.buttonShadow_Color),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: MyAppTheme.buttonShadow_Color, width: 2.0),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        suffixIcon: IconButton(
+                          icon: _showPassword
+                              ? const ImageIcon(AssetImage(MyImages.ic_eye_open))
+                              : const ImageIcon(AssetImage(MyImages.ic_eye_close)),
+                          onPressed: () {
+                            setState(() => _showPassword = !_showPassword);
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -160,10 +166,10 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter Confirm password';
-                      } else if (value.length < 7) {
-                        return 'Password must be greater then 7';
+                      } else if (value.length < 8) {
+                        return 'Password must be greater then 8';
                       } else if (!validatePassword(value)) {
-                        return 'Password must be combination of characters and digits';
+                        return 'Password must be a combination of upper and lower with special char and number';
                       } else if (value.length > 16) {
                         return 'Password must be less then 16';
                       }
@@ -174,7 +180,7 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                           const BoxConstraints(minHeight: 44, minWidth: 44),
                       filled: true,
                       fillColor: MyAppTheme.buttonShadow_Color,
-                      hintText: Constant.CONFIRM_PSW,
+                      hintText: Constant.CONFIRM_NEW_PSW,
                       prefixIcon: Image.asset(MyImages.ic_padlock),
                       //suffixIcon: Image.asset(MyImages.ic_eye_open),
                       focusedBorder: OutlineInputBorder(
@@ -217,37 +223,44 @@ class _ResetNewPasswordState extends State<ResetNewPassword> {
                         Constant.SUBMIT,
                         54,
                         onPressed: () {
-                          if (resetPassFormKey.currentState!.validate()) {
-                            FocusScope.of(this.context)
-                                .requestFocus(FocusNode());
-                            if (_passwordController.text ==
-                                _confirmPasswordController.text) {
-                              createResetNewPassword(
-                                      email,
-                                      _passwordController.text,
-                                      _confirmPasswordController.text,
-                                      context)
-                                  .then((response) {
-                                setState(() {
-                                  if (response.status == true) {
-                                    Get.toNamed(MyRouter.loginScreen,
-                                        arguments: Constant.PASS_VALUE);
-                                  } else {
-                                    Helpers.createSnackBar(
-                                        context, "status false");
-                                  }
+                          if (passFormKey.currentState!.validate()) {
+                            if (resetPassFormKey.currentState!.validate()) {
+                              FocusScope.of(this.context)
+                                  .requestFocus(FocusNode());
+                              if (_passwordController.text ==
+                                  _confirmPasswordController.text) {
+                                createResetNewPassword(
+                                    email,
+                                    _passwordController.text,
+                                    _confirmPasswordController.text,
+                                    context)
+                                    .then((response) {
+                                  setState(() {
+                                    if (response.status == true) {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => LoginScreen()),
+                                          ModalRoute.withName("/LoginScreen"));
+                                      // Get.toNamed(MyRouter.loginScreen,
+                                      //     arguments: Constant.PASS_VALUE);
+                                    } else {
+                                      Helpers.createSnackBar(
+                                          context, "status false");
+                                    }
+                                  });
                                 });
-                              });
-                            } else {
-                              Helpers.createSnackBar(
-                                  context, "Your Password Don't Match");
-                            }
+                              } else {
+                                Helpers.createSnackBar(
+                                    context, "Your Password Don't Match");
+                              }
 
-                            /* try {
+                              /* try {
                               Get.toNamed(MyRouter.homeScreen);
                             } on Exception catch (e) {
                               e.printError();
                             }*/
+                            }
                           }
                         },
                       ),

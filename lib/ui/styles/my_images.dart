@@ -20,7 +20,9 @@ class MyImages {
   static const String icDelete = "assets/images/ic_delete.png";
   static const String icDropDown = "assets/images/ic_dropdown.png";
   static const String imgPlan = "assets/images/img_plan.png";
-  static const String imgWhiteButton = "assets/images/img_whitebutton.png";
+
+
+  static const String loading = "assets/images/loading.gif";
 
   //svg path
   static const String icRightArrow = "assets/icons/ic_right_icon.svg";

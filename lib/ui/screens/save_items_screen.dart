@@ -29,7 +29,7 @@ class SaveItems extends StatelessWidget {
         ),
         leading: Builder(
           builder: (context) => IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back,size: 35,color: MyAppTheme.black_Color,),
               onPressed: () => {Get.back()}),
         ),
       ),
@@ -40,7 +40,7 @@ class SaveItems extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
             child: LightTextHead(
-              data: 'saveItems'.tr,
+              data: 'Saved Items'.tr,
             ),
           ),
           Expanded(

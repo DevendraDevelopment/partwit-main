@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     String id = prefs1.getString('id') ?? '';
     if (_seen) {
       if (id == '') {
-        Navigator.pushReplacementNamed(context, MyRouter.loginScreen);
+        Navigator.pushReplacementNamed(context, MyRouter.locationScreen);
       } else {
         Navigator.pushReplacementNamed(context, MyRouter.homeScreen);
       }

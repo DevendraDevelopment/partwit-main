@@ -9,6 +9,7 @@ import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
 import 'package:part_wit/model/ModelRegister.dart';
 import 'package:part_wit/repository/user_repository.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/home_screen.dart';
 import 'package:part_wit/ui/screens/signup_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
@@ -36,12 +37,15 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final loginFormKey = GlobalKey<FormState>();
-  bool _showPassword = false, _isEmailFocus = false, _isPasswordFocus = false;
+  final emailFormKey = GlobalKey<FormState>();
+  bool _showPassword = false,
+      _isEmailFocus = false,
+      _isPasswordFocus = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  FocusNode emailFocus = new FocusNode();
-  FocusNode passWordFocus = new FocusNode();
+  FocusNode emailFocus = FocusNode();
+  FocusNode passWordFocus = FocusNode();
 
   bool isLoggedIn = false;
   bool isIOS = false;
@@ -64,6 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     super.dispose();
@@ -72,14 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     setState(() {
-      if (Platform.isAndroid) {
-        // Android-specific code
-        isIOS = false;
-      } else if (Platform.isIOS) {
-        isIOS = true;
-        // iOS-specific code
-      }
+      checkPlatform();
     });
+    emailValidCon();
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
@@ -93,7 +94,6 @@ class _LoginScreenState extends State<LoginScreen> {
         print("GOOGLE1" + _currentUser!.email.toString());
       });
     });
-    // _googleSignIn.signInSilently();
   }
 
   Future<void> _handleSignIn() async {
@@ -108,7 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery
+        .of(context)
+        .size;
     return GestureDetector(
       onTap: () {
         ///hide keyboard function
@@ -136,49 +138,56 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: screenSize.height * 0.01,
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-                  child: TextFormField(
-                    style: const TextStyle(
-                        color: MyAppTheme.textPrimary,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14),
-                    obscureText: false,
-                    focusNode: emailFocus,
-                    controller: _emailController,
-                    onTap: () {
-                      setState(() {
-                        _isEmailFocus = true;
-                        _isPasswordFocus = false;
-                      });
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter email address';
-                      } else if (!isEmail(_emailController.text)) {
-                        return 'Please enter valid email address';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: MyAppTheme.buttonShadow_Color,
-                      hintText: Constant.USER_EMAIL,
-                      prefixIcon: Image.asset(MyImages.ic_mail),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: MyAppTheme.buttonShadow_Color),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
-                      border: OutlineInputBorder(
+
+                Form(
+                  key: emailFormKey,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+                    child: TextFormField(
+                      style: const TextStyle(
+                          color: MyAppTheme.textPrimary,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14),
+                      obscureText: false,
+                      focusNode: emailFocus,
+                      controller: _emailController,
+                      onTap: () {
+                        setState(() {
+                          _isEmailFocus = true;
+                          _isPasswordFocus = false;
+                        });
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter email address';
+                        } else if (!isEmail(_emailController.text)) {
+                          return 'Please enter valid email address';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        filled: true,
+                        errorMaxLines: 2,
+                        fillColor: MyAppTheme.buttonShadow_Color,
+                        hintText: Constant.USER_EMAIL,
+                        prefixIcon: Image.asset(MyImages.ic_mail),
+                        focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              color: MyAppTheme.whiteColor, width: 2.0),
-                          borderRadius: BorderRadius.circular(15.0)),
+                              color: MyAppTheme.buttonShadow_Color),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: MyAppTheme.buttonShadow_Color),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(15.0))),
+                        border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: MyAppTheme.whiteColor, width: 2.0),
+                            borderRadius: BorderRadius.circular(15.0)),
+                      ),
                     ),
                   ),
                 ),
@@ -193,7 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: !this._showPassword,
                     focusNode: passWordFocus,
                     onTap: () {
-                      //emailFocus.unfocus();
+                      emailFocus.unfocus();
+                      // loginFormKey.currentState!.validate();
                       setState(() {
                         _isEmailFocus = false;
                         _isPasswordFocus = true;
@@ -201,20 +211,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter Confirm password';
-                      } else if (value.length < 7) {
-                        return 'Password must be greater then 7';
+                        return 'Please enter password';
+                      } else if (value.length < 8) {
+                        return 'Password must be greater then 8';
                       } else if (!validatePassword(value)) {
-                        return 'Password must be combination of characters and digits';
+                        return 'Password must be a combination of upper and lower with special char and number';
                       } else if (value.length > 16) {
                         return 'Password must be less then 16';
                       }
                       return null;
                     },
+                    textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: MyAppTheme.buttonShadow_Color,
                       hintText: Constant.USER_PASSWORD,
+                      errorMaxLines: 2,
                       prefixIcon: Image.asset(MyImages.ic_padlock),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -223,17 +235,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: MyAppTheme.buttonShadow_Color),
+                          BorderSide(color: MyAppTheme.buttonShadow_Color),
                           borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
+                          BorderRadius.all(Radius.circular(15.0))),
                       border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               color: MyAppTheme.buttonShadow_Color, width: 2.0),
                           borderRadius: BorderRadius.circular(15.0)),
                       suffixIcon: IconButton(
                         icon: _showPassword
-                            ? ImageIcon(AssetImage(MyImages.ic_eye_open))
-                            : ImageIcon(AssetImage(MyImages.ic_eye_close)),
+                            ? ImageIcon(AssetImage(MyImages.ic_eye_open),
+                          color: MyAppTheme.passwordIconColor,)
+                            : ImageIcon(AssetImage(MyImages.ic_eye_close),
+                          color: MyAppTheme.passwordIconColor,),
                         onPressed: () {
                           setState(() => _showPassword = !_showPassword);
                         },
@@ -265,25 +279,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         54,
                         onPressed: () {
                           // Get.toNamed(MyRouter.createProfile);
-                          if (loginFormKey.currentState!.validate()) {
-                            _isEmailFocus = false;
-                            _isPasswordFocus = false;
-                            FocusScope.of(this.context)
-                                .requestFocus(FocusNode());
-                            Helpers.verifyInternet().then((intenet) {
-                              if (intenet != null && intenet) {
-                                createLogin(_emailController.text,
-                                        _passwordController.text, context)
-                                    .then((response) {
-                                  setState(() {
-                                    loginData(response);
+                          if (emailFormKey.currentState!.validate()) {
+                            if (loginFormKey.currentState!.validate()) {
+                              _isEmailFocus = false;
+                              _isPasswordFocus = false;
+                              FocusScope.of(this.context)
+                                  .requestFocus(FocusNode());
+                              Helpers.verifyInternet().then((intenet) {
+                                if (intenet != null && intenet) {
+                                  createLogin(_emailController.text,
+                                      _passwordController.text, context)
+                                      .then((response) {
+                                    setState(() {
+                                      loginData(response);
+                                    });
                                   });
-                                });
-                              } else {
-                                Helpers.createSnackBar(context,
-                                    "Please check your internet connection");
-                              }
-                            });
+                                } else {
+                                  Helpers.createSnackBar(context,
+                                      "Please check your internet connection");
+                                }
+                              });
+                            }
                           }
                         },
                       ),
@@ -307,10 +323,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       Get.toNamed(MyRouter.signupScreen);
                     },
-                    child: const Padding(padding: EdgeInsets.fromLTRB(4, 6, 6, 6),
-                    child: LightTextBodyBlack(
-                      data: Constant.SIGNUP_HERE,
-                    ),),
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(4, 6, 6, 6),
+                      child: LightTextBodyBlack(
+                        data: Constant.SIGNUP_HERE,
+                      ),
+                    ),
                   )
                 ]),
                 SizedBox(
@@ -326,69 +344,91 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Row socialMedialSignIn(Size screenSize) {
     return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      FacebookAuth.instance.login(permissions: [
-                        "public_profile",
-                        "email"
-                      ]).then((value) {
-                        print("FB DATA :: " +
-                            value.toString() +
-                            "\n" +
-                            value.status.toString());
-                        print("FB DATA 1 :: " + value.accessToken.toString());
-                        FacebookAuth.instance.getUserData().then((userData) {
-                          setState(() {
-                            // _isLoggedIn = true;
-                            _userObj = userData;
-                            print("USER DATA :: " + _userObj.toString());
-                          });
-                        });
-                      });
-                    },
-                    child: Image.asset(
-                      MyImages.ic_fb,
-                    ),
-                  ),
-                  SizedBox(width: screenSize.height * 0.02,),
-                  GestureDetector(
-                    onTap: () {
-                      _handleSignIn();
-                      print("USER :: " + _currentUser!.email);
-                    }, // handle your image tap here
-                    child: Image.asset(
-                      MyImages.ic_gplus,
-                    ),
-                  ),
-                  Visibility(
-                    child: Row(children: [
-                      SizedBox(
-                        width: screenSize.height * 0.02,
-                      ),
-                      GestureDetector(
-                        child: Image.asset(
-                          MyImages.ic_mac,
-                        ),
-                        onTap: () {},
-                      ),
-                    ],
-                    ),
-                    visible: isIOS,
-                  ),
-                ],
-              );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            FacebookAuth.instance
+                .login(permissions: ["public_profile", "email"]).then((value) {
+              FacebookAuth.instance.getUserData().then((userData) {
+                setState(() {
+                  // _isLoggedIn = true;
+                  _userObj = userData;
+                  print("USER DATA :: " + _userObj.toString());
+                });
+              });
+            });
+          },
+          child: Image.asset(
+            MyImages.ic_fb,
+          ),
+        ),
+        SizedBox(
+          width: screenSize.height * 0.02,
+        ),
+        GestureDetector(
+          onTap: () {
+            _handleSignIn();
+            print("USER :: " + _currentUser!.email);
+          }, // handle your image tap here
+          child: Image.asset(
+            MyImages.ic_gplus,
+          ),
+        ),
+        Visibility(
+          child: Row(
+            children: [
+              SizedBox(
+                width: screenSize.height * 0.02,
+              ),
+              GestureDetector(
+                child: Image.asset(
+                  MyImages.ic_mac,
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
+          visible: isIOS,
+        ),
+      ],
+    );
+  }
+
+  void emailValidCon() {
+    _emailController.addListener(() {
+      if (isEmail(_emailController.text)) {
+        emailFormKey.currentState!.validate();
+      }
+    });
+    _passwordController.addListener(() {
+      if (validatePassword(_passwordController.text)) {
+        loginFormKey.currentState!.validate();
+      }
+    });
+  }
+
+  void checkPlatform() {
+    if (Platform.isAndroid) {
+      isIOS = false;
+    } else if (Platform.isIOS) {
+      isIOS = true;
+    }
   }
 
   void loginData(ModeRegister response) {
     loginAndRegistrationresponse = response;
     if (loginAndRegistrationresponse!.status) {
-      Get.toNamed(MyRouter.homeScreen);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(0)),
+          ModalRoute.withName("/LoginScreen"));
     }
   }
 }
 
 bool isEmail(String em) {
-  return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(em);
+  return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(em);
 }

@@ -96,9 +96,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter email address';
-                      } /*else if (!isEmail(_emailController.text)) {
+                      } else if (!isEmail(_emailController.text)) {
                         return 'Please enter valid email address';
-                      }*/
+                      }
                       return null;
                     },
                     decoration: InputDecoration(

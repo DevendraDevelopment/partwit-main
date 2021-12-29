@@ -32,6 +32,7 @@ class _TermsConditionState extends State<TermsCondition> {
           builder: (context) => IconButton(
               icon: const Icon(
                 Icons.arrow_back,
+                color: MyAppTheme.black_Color,
                 size: 35,
               ),
               onPressed: () => {Get.back()}),

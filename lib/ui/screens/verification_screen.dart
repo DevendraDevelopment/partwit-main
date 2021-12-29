@@ -4,9 +4,11 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:part_wit/repository/resend_otp_repository.dart';
 import 'package:part_wit/repository/verify_user_email_otp.dart';
 import 'package:part_wit/ui/routers/my_router.dart';
+import 'package:part_wit/ui/screens/create_profile_screen.dart';
 import 'package:part_wit/ui/styles/my_app_theme.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
 import 'package:part_wit/ui/widgets/custom_button.dart';
+import 'package:part_wit/ui/widgets/custom_checkbox.dart';
 import 'package:part_wit/ui/widgets/light_text_body.dart';
 import 'package:part_wit/ui/widgets/light_text_body_underline.dart';
 import 'package:part_wit/ui/widgets/light_text_head.dart';
@@ -17,23 +19,23 @@ import 'package:part_wit/utils/utility.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
 class VerificationScreen extends StatefulWidget {
-  String otptyp, email;
+  String otpType, password, email;
 
-  VerificationScreen(String this.email, String this.otptyp) : super();
+  VerificationScreen(String this.email, String this.password, String this.otpType) : super();
 
   @override
   State<VerificationScreen> createState() =>
-      _VerificationScreenState(email, otptyp);
+      _VerificationScreenState(email, password, otpType);
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final verification_formKey = GlobalKey<FormState>();
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
-  String otptyp, email;
+  String otpType, email, password;
   bool _isAgreeCheckBox = true;
 
-  _VerificationScreenState(String this.email, String this.otptyp);
+  _VerificationScreenState(String this.email, String this.password, String this.otpType);
 
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -126,18 +128,42 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Checkbox(
-                            activeColor: Colors.yellow,
-                            value: this._isAgreeCheckBox,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                this._isAgreeCheckBox = value!;
-                              });
-                            },
-                          ),
-                          /*CustomCheckbox(
-                      key: signupkey_formKey,
-                    ),*/
+                          InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isAgreeCheckBox = !_isAgreeCheckBox;
+                                });
+                              },
+                              child: Container(
+                                child: _isAgreeCheckBox
+                                    ? Container(
+                                    height: 20,
+                                    width: 20,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(5),
+                                          bottomRight: Radius.circular(5),
+                                          topLeft: Radius.circular(5),
+                                          topRight: Radius.circular(5)),
+                                      child: Container(
+                                        color: MyAppTheme.pin_bg_Color,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Image.asset(
+                                              MyImages.ic_checked,
+                                              height: 12,
+                                              fit: BoxFit.fill),
+                                        ),
+                                      ),
+                                    ))
+                                    : Container(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Image.asset(MyImages.ic_unchecked,
+                                      height: 20,
+                                      width: 20,
+                                      fit: BoxFit.fill),
+                                ),
+                              )),
                           SizedBox(
                             width: screenSize.height * 0.001,
                           ),
@@ -164,11 +190,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             Helpers.verifyInternet().then((intenet) {
                               if (intenet != null && intenet) {
                                 createVerifyUserEmailOtp(
-                                        _pinPutController.text, context)
+                                        _pinPutController.text,email, context)
                                     .then((response) {
                                   setState(() {
                                     if (response.status == true) {
-                                      Get.toNamed(MyRouter.createProfile);
+                                      // Get.toNamed(MyRouter.createProfile);
+                                      // Navigator.pushReplacementNamed(context, MyRouter.createProfile);
+
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => CreateProfile(email, password)),
+                                      );
                                     } else {
                                       //  Get.toNamed(MyRouter.createProfile);
                                     }
@@ -208,7 +241,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       onTap: () {
         Helpers.verifyInternet().then((intenet) {
           if (intenet != null && intenet) {
-            createResendOtp(otptyp, email, context).then((response) {
+            createResendOtp(otpType, email, context).then((response) {
               setState(() {
                 if (response.status == true) {
                   // Get.toNamed(MyRouter.createProfile,

@@ -117,7 +117,7 @@ class _UserProfileState extends State<UserProfile> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             LightTextSubHead(
-                              data: 'ItemsListed'.tr,
+                              data: 'Items Listed For Sale'.tr,
                             ),
                             SvgPicture.asset(
                               MyImages.icRightArrow,

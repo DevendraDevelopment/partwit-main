@@ -7,15 +7,13 @@ class LightTextBody extends StatelessWidget {
   const LightTextBody({required this.data}) : super();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        data,
-        style: const TextStyle(
-            fontStyle: FontStyle.normal,
-            fontSize: 16,
-            color: MyAppTheme.textPrimary,
-            fontFamily: Fonts.biotifNormal),
-      ),
+    return Text(
+      data,
+      style: const TextStyle(
+          fontStyle: FontStyle.normal,
+          fontSize: 16,
+          color: MyAppTheme.textPrimary,
+          fontFamily: Fonts.biotifNormal),
     );
   }
 }

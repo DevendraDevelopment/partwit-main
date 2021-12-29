@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:part_wit/ui/styles/my_images.dart';
+import 'package:part_wit/utils/Helpers.dart';
 
 
 class CustomCheckbox extends StatefulWidget {
-  const CustomCheckbox({required Key key}) : super(key: key);
+  bool value = false;
+  CustomCheckbox(this.value);
 
   @override
-  _CustomCheckboxState createState() => _CustomCheckboxState();
+  _CustomCheckboxState createState() => _CustomCheckboxState(value);
 }
 
 class _CustomCheckboxState extends State<CustomCheckbox> {
   bool value = false;
+
+  _CustomCheckboxState(bool this.value);
 
   @override
   Widget build(BuildContext context) {
